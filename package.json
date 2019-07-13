@@ -1,6 +1,6 @@
 {
   "version": "3.0.0",
-  "name": "gatsby-starter-lumen",
+  "name": "kwoncharles-blog",
   "description": "A minimal, lightweight and mobile-first starter for creating blazing-fast static blogs",
   "main": "n/a",
   "scripts": {
@@ -18,8 +18,8 @@
     "test:watch": "jest --watch --config ./jest/jest-config.js",
     "release": "standard-version"
   },
-  "repository": "https://github.com/alxshelepenok/gatsby-starter-lumen",
-  "author": "Alexander Shelepenok <alxshelepenok@gmail.com>",
+  "repository": "https://github.com/kwoncharles/kwoncharles-blog",
+  "author": "Charles Kwoncheol Shin <skc7401@gmail.com>",
   "license": "MIT",
   "keywords": [
     "gatsby",
