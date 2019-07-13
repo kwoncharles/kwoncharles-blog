@@ -28,12 +28,11 @@ module.exports = {
         photo: '/test.jpg',
         bio: 'Test bio',
         contacts: {
-          email: '#',
-          telegram: '#',
-          twitter: '#',
-          github: '#',
-          rss: '#',
-          vkontakte: '#'
+          email: 'skc7401@gmail.com',
+          linkedin: 'kwoncheolshin',
+          // twitter: '#',
+          github: 'kwoncharles',
+          rss: '#'
         }
       }
     }

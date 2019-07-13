@@ -3,19 +3,19 @@
 module.exports = {
   url: 'https://lumen.netlify.com',
   pathPrefix: '/',
-  title: 'Blog by John Doe',
-  subtitle: 'Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu.',
-  copyright: '© All rights reserved.',
+  title: 'Kwoncharles blog',
+  subtitle: '기술에 대해 이야기하고, 더 나은 삶에 대해 이야기합니다.',
+  copyright: '© All rights reserved by Kwoncharles.',
   disqusShortname: '',
   postsPerPage: 4,
   googleAnalyticsId: 'UA-73379983-2',
   menu: [
     {
-      label: 'Articles',
+      label: 'Post',
       path: '/'
     },
     {
-      label: 'About me',
+      label: 'Career',
       path: '/pages/about'
     },
     {
@@ -24,16 +24,15 @@ module.exports = {
     }
   ],
   author: {
-    name: 'John Doe',
-    photo: '/photo.jpg',
-    bio: 'Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu.',
+    name: '신 권철',
+    photo: '/charles.png',
+    bio: '기술, 그리고 지속가능한 세상을 만드는 것에 관심이 많습니다.',
     contacts: {
-      email: '#',
-      telegram: '#',
-      twitter: '#',
-      github: '#',
-      rss: '#',
-      vkontakte: '#'
+      email: 'skc7401@gmail.com',
+      linkedin: 'kwoncheolshin',
+      // twitter: '#',
+      github: 'kwoncharles',
+      rss: '#'
     }
   }
 };
