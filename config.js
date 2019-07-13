@@ -15,13 +15,13 @@ module.exports = {
       path: '/'
     },
     {
-      label: 'Career',
+      label: 'About me',
       path: '/pages/about'
     },
-    {
-      label: 'Contact me',
-      path: '/pages/contacts'
-    }
+    // {
+    //   label: 'Contact me',
+    //   path: '/pages/contacts'
+    // }
   ],
   author: {
     name: '신 권철',
@@ -31,8 +31,8 @@ module.exports = {
       email: 'skc7401@gmail.com',
       linkedin: 'kwoncheolshin',
       // twitter: '#',
-      github: 'kwoncharles',
-      rss: '#'
+      github: 'kwoncharles'
+      // rss: '#'
     }
   }
 };

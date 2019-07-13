@@ -32,7 +32,7 @@ module.exports = {
           linkedin: 'kwoncheolshin',
           // twitter: '#',
           github: 'kwoncharles',
-          rss: '#'
+          // rss: '#'
         }
       }
     }

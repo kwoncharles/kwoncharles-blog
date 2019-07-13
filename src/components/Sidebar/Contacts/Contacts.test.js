@@ -10,7 +10,7 @@ describe('Contacts', () => {
       email: '#',
       // twitter: '#',
       github: '#',
-      rss: '#',
+      // rss: '#',
       linkedin: '#'
     }
   };

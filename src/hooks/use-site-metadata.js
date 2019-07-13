@@ -14,8 +14,7 @@ const useSiteMetadata = () => {
               contacts {
                 email
                 linkedin
-                github
-                rss
+                github                
               }
             }
             menu {
