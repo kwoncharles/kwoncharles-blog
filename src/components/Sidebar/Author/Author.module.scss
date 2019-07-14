@@ -4,9 +4,30 @@
 .author {
   &__photo {
     display: inline-block;
+
+    width: 75px;
+    height: 75px;
     margin-bottom: 0;
     border-radius: 50%;
     background-clip: padding-box
+  }
+
+  .avatarHalo {
+    display: inline-block;
+    position: absolute;
+    width: 95px;
+    height: 95px;
+    top: 15px;
+    left: 10px;
+    color: #03a87c!important;
+    fill: #03a87c!important;
+    @include breakpoint-sm {
+      top: 20px;
+    }
+    @include breakpoint-md {
+      top: 30px;
+      left: 30px;
+    }
   }
 
   &__title {

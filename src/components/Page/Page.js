@@ -10,7 +10,7 @@ const Page = ({ title, children }: Props) => {
   const pageRef = useRef();
 
   useEffect(() => {
-    pageRef.current.scrollIntoView();
+    // pageRef.current.scrollIntoView();
   });
 
   return (
