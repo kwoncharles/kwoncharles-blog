@@ -94,13 +94,13 @@ hr {
 a {
   color: $typographic-link-p-font-color;
   text-decoration: none;
-
+/*
   &:hover,
   &:focus,
   &:active {
     color: $typographic-link-s-font-color;
   }
-
+*/
 }
 
 b,
@@ -149,6 +149,7 @@ figcaption {
 .anchor {
   margin-left: -30px !important;
   padding-right: 14px !important;
+  border-bottom: none !important;
 }
 
 @include breakpoint-sm {

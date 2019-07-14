@@ -41,7 +41,12 @@
     }
 
     & a {
-      text-decoration: underline
+      padding-bottom: 1px;
+      border-bottom: 2px solid $color-primary;
+
+      &:hover {
+        border-bottom: none;
+      }
     }
 
     & * {
