@@ -39,7 +39,7 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 
 [Puppeteer](https://pptr.dev/)는 Chrome 혹은 Chromium이 할 수 있는 일을 커맨드라인에서 실행할 수 있게 해주는 라이브러리입니다. 
 
-공식문서에서는 "which provides a high-level API to control **headless Chrome or Chromium** over the DevTools Protocol."라고 설명하고 있습니다. 여기서 *headless*란 GUI가 없다는 의미입니다.
+공식문서에서는 *"which provides a high-level API to control **headless Chrome or Chromium** over the DevTools Protocol."*라고 설명하고 있습니다. 여기서 *headless*란 GUI가 없다는 의미입니다.
 
 쉽게 말해 우리는 Puppeteer를 이용해 크롬에서 할 수 있는 __거의 모든 작업__을 코드로 만들어 **자동화**시킬 수 있습니다. 구글 Chrome 팀에서 개발했고 관리하고 있습니다.
 
@@ -88,9 +88,14 @@ const puppeteer = require("puppeteer");
 주석을 달아 놓긴 했지만 주석이 없더라도 알아보기 쉽게 코드가 나오는 것을 볼 수 있습니다. 이와 비슷하게 sequential한 코드로 쉽게 자동화 할 수 있는 것들이 많아 보입니다.
 
 예를 들어, 회원가입이나 예약 등의 form을 작성할 때 유용한 **자동완성** 기능도 puppeteer를 이용하면 직접 구현할 수 있습니다. 
+<br>
 
-**SPA prerendering**같은 경우에는 크롤링에 큰 도움이 될 수 있는 기능입니다. 최근 개발된 대부분의 웹사이트는 React, Angular, Vue 등을 이용해 개발된 SPA(Single Page Application)입니다. SPA는 웹페이지가 실행될 때 JS를 이용해 DOM을 그리기 때문에 **일반적인 크롤러**는 SPA를 빈 페이지로 인식합니다.
+**SPA prerendering** 같은 경우에는 크롤링에 큰 도움이 될 수 있는 기능입니다. 최근 개발된 대부분의 웹사이트는 React, Angular, Vue 등을 이용해 개발된 SPA(Single Page Application)입니다. SPA는 웹페이지가 실행될 때 JS를 이용해 DOM을 그리기 때문에 **일반적인 크롤러**는 SPA를 빈 페이지로 인식합니다.
 
-하지만 Puppeteer를 이용하면 크롤러가 JS를 실행할 수 있게 되고 SPA더라도 모든 페이지를 정상적으로 읽어올 수 있게 됩니다.
+하지만 Puppeteer를 이용하면 크롤러가 JS를 실행할 수 있게 되고 SPA 이더라도 모든 페이지를 정상적으로 읽어올 수 있게 됩니다.
+
+<br>
+
+Puppeteer와 함께라면 모든지 할 수 있을 것 같아 보입니다. 하지만 가장 큰 제약은 역시 [Captcha](https://www.pandasecurity.com/mediacenter/panda-security/what-is-captcha/)와 같은 Bot Detecting System 입니다. 이를 보완하기 위해 인간의 움직임을 흉내낼 수 있는 라이브러리도 있다고 합니다. 이는 주제를 벗어나므로 다루지 않겠습니다!
 
 *Originally published by [Matej Latin](http://matejlatin.co.uk/) on [Medium](https://medium.com/design-notes/humane-typography-in-the-digital-age-9bd5c16199bd?ref=webdesignernews.com#.lygo82z0x).*
