@@ -98,13 +98,12 @@ const puppeteer = require("puppeteer");
 
 Puppeteer와 함께라면 모든지 할 수 있을 것 같아 보입니다. 하지만 가장 큰 제약은 역시 [Captcha](https://www.pandasecurity.com/mediacenter/panda-security/what-is-captcha/)와 같은 Bot Detecting System 입니다. 이를 보완하기 위해 인간의 움직임을 흉내낼 수 있는 라이브러리도 있다고 합니다. 이는 주제를 벗어나므로 다루지 않겠습니다!
 
-해주셨습니다. 
-
 ## Portals
-
-> #### ** *네이버* Frontend Engineer [조은](https://brunch.co.kr/@techhtml)님이 발표하신 세션입니다.**
+> #### ** 네이버 Frontend Engineer [조은](https://brunch.co.kr/@techhtml)님이 발표하신 세션입니다.**
 <br>
+
 어벤저스를 보셨거나 게임을 좋아하시는 분이라면 포탈이라는 단어를 들었을 때 떠오르는 무언가가 있을 것입니다. 네 맞습니다. 이번 세션에서 소개된 포탈도 그와 동일한 역할을 하는 포탈입니다. 
+
 포탈을 한마디로 설명하자면 [“A new webpage navigation system”](https://www.google.com/amp/s/www.zdnet.com/google-amp/article/google-launches-portals-a-new-web-page-navigation-system-for-chrome/) 이라고 할 수 있습니다. 
 포탈은 서로 다른 웹 애플리케이션 사이의 연결
 서로 떨어져 있는 
