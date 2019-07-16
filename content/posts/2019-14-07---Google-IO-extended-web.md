@@ -39,7 +39,7 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 
 [Puppeteer](https://pptr.dev/)는 Chrome 혹은 Chromium이 할 수 있는 일을 커맨드라인에서 실행할 수 있게 해주는 라이브러리입니다. 
 
-공식문서에서는 *"which provides a high-level API to control **headless Chrome or Chromium** over the DevTools Protocol."*라고 설명하고 있습니다. 여기서 *headless*란 GUI가 없다는 의미입니다.
+공식문서에서는 *"which provides a high-level API to control **headless Chrome or Chromium** over the DevTools Protocol."* 라고 설명하고 있습니다. 여기서 *headless* 란 GUI가 없다는 의미입니다.
 
 쉽게 말해 우리는 Puppeteer를 이용해 크롬에서 할 수 있는 __거의 모든 작업__을 코드로 만들어 **자동화**시킬 수 있습니다. 구글 Chrome 팀에서 개발했고 관리하고 있습니다.
 
@@ -97,5 +97,18 @@ const puppeteer = require("puppeteer");
 <br>
 
 Puppeteer와 함께라면 모든지 할 수 있을 것 같아 보입니다. 하지만 가장 큰 제약은 역시 [Captcha](https://www.pandasecurity.com/mediacenter/panda-security/what-is-captcha/)와 같은 Bot Detecting System 입니다. 이를 보완하기 위해 인간의 움직임을 흉내낼 수 있는 라이브러리도 있다고 합니다. 이는 주제를 벗어나므로 다루지 않겠습니다!
+
+해주셨습니다. 
+
+## Portals
+
+> #### ** *네이버* Frontend Engineer [조은](https://brunch.co.kr/@techhtml)님이 발표하신 세션입니다.**
+<br>
+어벤저스를 보셨거나 게임을 좋아하시는 분이라면 포탈이라는 단어를 들었을 때 떠오르는 무언가가 있을 것입니다. 네 맞습니다. 이번 세션에서 소개된 포탈도 그와 동일한 역할을 하는 포탈입니다. 
+포탈을 한마디로 설명하자면 [“A new webpage navigation system”](https://www.google.com/amp/s/www.zdnet.com/google-amp/article/google-launches-portals-a-new-web-page-navigation-system-for-chrome/) 이라고 할 수 있습니다. 
+포탈은 서로 다른 웹 애플리케이션 사이의 연결
+서로 떨어져 있는 
+포탈은 여러 개의 웹 애플리케이션
+포탈은 [Micro Frontend](https://micro-frontends.org/) 
 
 *Originally published by [Matej Latin](http://matejlatin.co.uk/) on [Medium](https://medium.com/design-notes/humane-typography-in-the-digital-age-9bd5c16199bd?ref=webdesignernews.com#.lygo82z0x).*
