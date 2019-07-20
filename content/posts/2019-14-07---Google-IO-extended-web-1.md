@@ -3,13 +3,15 @@ title: Google I/O Extended 2019 Seoul WebTech 참관기 (1/2)
 date: "2019-07-14T10:40:32.169Z"
 template: "post"
 draft: false
-slug: "/posts/google-io-extended-web/"
+slug: "/posts/google-io-extended-web-1/"
 category: "Tech"
 tags:
   - "Web Development"
   - "Google"
 description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 기술을 집중 조명해 공유하는 자리를 가졌습니다."
 ---
+
+![google_io.jpeg](/Google-IO-extended-web/google_io.jpeg)
 
 어제 구글 스타트업 캠퍼스에서 열렸던 I/O extended에 다녀왔습니다. **Google I/O**는 구글에서 여는 가장 큰 규모의 개발자 중심 컨퍼런스입니다. [2008년](https://sites.google.com/site/io/)을 시작으로 10년 넘게 이어지고 있으며, 매년 5월 (가끔 6월) 구글 본사가 위치한 캘리포니아 마운틴뷰에서 열립니다.
 
@@ -29,9 +31,6 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 - [Puppeteer](#puppeteer)
 - [Portals](#portals)
 - [New Capabilities of the Web](#new-capabilities-of-the-web)
-- [Web Assembly](#chasing-perfection)
-- [PWA](#chasing-perfection)
-- [Lighthouse](#chasing-perfection)
 
 ----
 
@@ -112,11 +111,9 @@ Puppeteer와 함께라면 모든지 할 수 있을 것 같아 보입니다. 하�
 
 백문이 불여일견이니 [포탈이 동작하는 영상](https://web.dev/hands-on-portals)을 먼저 보시면 좋겠습니다.
 
-🕊
+ 
 
-🕊
-
-🕊
+  
 
 영상에서는 유저가
 1. 레시피를 살펴보고
