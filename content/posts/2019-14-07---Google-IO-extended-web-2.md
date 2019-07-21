@@ -44,7 +44,7 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 
 ### 태초에... 
 
- WebAssembly라는 개념이 나오기 한참 전인 2012년, [Emscripten](https://emscripten.org) 이란 녀석이 나왔습니다. Emscripten은 C/C++ 코드를 Javascrip 코드로 컴파일해주는 source to source 컴파일러입니다. C/C++로 작성한 코드를 웹페이지에서 재활용하기 위한 목적이었습니다. 이후 이러한 js 코드를 [asm.js](https://blog.outsider.ne.kr/927)라는 이름으로 부르기 시작했습니다. asm.js는 js의 부분집합으로 Object, Closure, String 등을 빼고 primitive 타입들과 while, if 등 C/C++ 에서 사용 가능한 기능들로 동일하게 구성돼있습니다.
+ WebAssembly라는 개념이 나오기 한참 전인 2012년, [Emscripten](https://emscripten.org) 이란 녀석이 나왔습니다. Emscripten은 C/C++ 코드를 Javascrip 코드로 컴파일해주는 source to source 컴파일러입니다. C/C++로 작성한 코드를 웹페이지에서 재활용하기 위한 목적이었습니다. 이후 이러한 js 코드를 [asm.js](https://blog.outsider.ne.kr/927)라는 이름으로 부르기 시작했습니다. asm.js는 js의 부분집합입니다. JS에서 고수준 타입들인 Object, Closure, String 등을 제외한 primitive 타입들을 사용하며 while, if 등 C/C++ 에서 사용 가능한 문법들만 사용합니다.
 
 ![asm_js_example.jpg](/Google-IO-extended-web/asm_js_example.jpg)
 > asm.js는 이렇게 생겼다!
@@ -77,13 +77,20 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 
 WebAssembly는 2017년 말부터 4개의 주요 브라우저에서 모두 지원하고 있기 때문에 나름 안정화된 단계로 접어들고 있다고 말할 수 있습니다.
 
-#### Is it the end of JS?
+*WebAssembly를 지원하는 언어들은 [awesome-wasm-langs](https://github.com/appcypher/awesome-wasm-langs)에서 확인하실 수 있습니다!*
 
-그렇다면 자바스크립트는 더이상 쓰이지 않는 것일까요? 대답은 **No** 입니다.
+### 질문에 대한 답
 
-JS가 WebAssembly보다 [더 빠른 경우](https://lemire.me/blog/2018/10/23/is-webassembly-faster-than-javascript/)도 있으며 가벼운 애플리케이션의 경우 WebAssembly로 얻는 이점이 미미하기 때문에 투자대비 효율이 좋지 않을 수 있습니다.
+이제 앞에서 물었던 세 가지 질문에 대한 답을 할 시간입니다.
 
-현재 WebAssembly는 이미지 처리, 게임, 복잡한 알고리즘 등 **무거운 동작**에 적합하며 바로 다음에 소개할 **PWA**와 결합되면 상당한 시너지 효과를 낼 수 있을 것으로 보입니다.
+1. WebAssembly는 왜 생겼나요?
+  더 빠른 속도에 대한 갈망, 기술이 발전함에 따라 다른 뿌리를 가진 것들을 하나로 통합하고자 하는 욕구
+
+2. WebAssembly를 쓰려면 C/C++를 써야 하나요?
+  No. 위에서 소개했 듯이 다양한 언어로 작성이 가능합니다.
+
+3. WebAssembly가 Javascript를 대체할까요?
+  No. JS가 WebAssembly보다 [더 빠른 경우](https://lemire.me/blog/2018/10/23/is-webassembly-faster-than-javascript/)도 있으며 가벼운 애플리케이션의 경우 WebAssembly로 얻는 이점이 미미하기 때문에 투자대비 효율이 좋지 않을 수 있습니다. 현재 WebAssembly는 이미지 처리, 게임, 복잡한 알고리즘 등 **무거운 동작**에 적합하며 바로 다음에 소개할 **PWA**와 결합되면 상당한 시너지 효과를 낼 수 있을 것으로 보입니다.
 
 ----
 
@@ -93,7 +100,7 @@ JS가 WebAssembly보다 [더 빠른 경우](https://lemire.me/blog/2018/10/23/is
 <br>
 
 PWA(Progressive Web App)는 지난 글에서 이야기했던 [New capabilities of the Web](https://kwoncheol.me/posts/google-io-extended-web-1/#new-capabilities-of-the-web)와 맡닿아 있는 것이 많습니다.
-둘 다 **Web**을 **Universal application platform**으로 만들자는 목표로 나오게 된 것들입니다.
+둘 다 **Web**을 **Universal application platform**으로 만들자는 목표를 공유하고 있습니다.
 
 PWA는 간단히 말하면 웹앱을 **모바일/데스크탑** 앱으로 쓸 수 있게 해주는 awesome한 녀석입니다! 이렇게만 들으면 더 이상 [리액트네이티브](https://facebook.github.io/react-native/), [일렉트론](https://electronjs.org)은 필요가 없어 보입니다. 물론 언젠가 그런 날이 올 수도 있지만 아직은 시기상조입니다.
 
@@ -125,6 +132,8 @@ PWA 존재의 가장 큰 이유입니다. 일반적으로 웹앱은 인터넷 �
 그리고 **푸쉬알림** 또한 지원합니다 🎉 네이티브 앱과 마찬가지로 푸쉬알림 권한을 요청할 수 있으며 유저가 허용할 시 디바이스로 알림을 보낼 수 있습니다. 
 
 다만 **IOS**는 아직 푸쉬알림을 지원하지 않습니다 😢
+
+*대표적인 PWA 앱으로는 [트위터](https://twitter.com), [핀터레스트](https://www.pinterest.com/), [우버](https://m.uber.com), [스타벅스](https://app.starbucks.com/) 등이 있습니다.*
 
 ### Architecture
 
