@@ -3,10 +3,10 @@
 module.exports = {
   url: 'https://kwoncharles.netlify.com',
   pathPrefix: '/',
-  title: 'Kwoncharles blog',
+  title: 'Sustainable Development',
   subtitle: '기술에 대해 이야기하고, 더 나은 삶에 대해 이야기합니다.',
-  copyright: '© All rights reserved by Kwoncharles.',
-  disqusShortname: '',
+  copyright: '© All rights reserved by Kwoncheol.',
+  disqusShortname: 'kwoncheol',
   postsPerPage: 4,
   googleAnalyticsId: 'UA-73379983-2',
   menu: [

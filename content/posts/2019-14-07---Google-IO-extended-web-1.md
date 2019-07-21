@@ -27,10 +27,12 @@ description: "2019년 5월 7-9일에 열렸던 Google I/O 세션 중 Web 관련 
 
 총 6개의 세션이 진행되었으며, 3명의 organizer분들이 두 세션씩 발표를 해주셨습니다. 
 
-
 - [Puppeteer](#puppeteer)
 - [Portals](#portals)
 - [New Capabilities of the Web](#new-capabilities-of-the-web)
+- WebAssembly
+- PWA
+- Lighthouse
 
 ----
 

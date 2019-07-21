@@ -3,11 +3,11 @@
 module.exports = {
   site: {
     siteMetadata: {
-      url: 'http://localhost',
+      url: 'https://kwoncheol.me',
       title: 'Test title',
       subtitle: 'Test subtitle',
       copyright: 'Test copyright',
-      disqusShortname: '',
+      disqusShortname: 'kwoncheol',
       postsPerPage: 4,
       menu: [
         {
