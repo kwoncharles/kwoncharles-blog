@@ -84,12 +84,15 @@ WebAssembly는 2017년 말부터 4개의 주요 브라우저에서 모두 지원
 이제 앞에서 물었던 세 가지 질문에 대한 답을 할 시간입니다.
 
 1. WebAssembly는 왜 생겼나요?
+
   더 빠른 속도에 대한 갈망, 기술이 발전함에 따라 다른 뿌리를 가진 것들을 하나로 통합하고자 하는 욕구
 
 2. WebAssembly를 쓰려면 C/C++를 써야 하나요?
+
   No. 위에서 소개했 듯이 다양한 언어로 작성이 가능합니다.
 
 3. WebAssembly가 Javascript를 대체할까요?
+
   No. JS가 WebAssembly보다 [더 빠른 경우](https://lemire.me/blog/2018/10/23/is-webassembly-faster-than-javascript/)도 있으며 가벼운 애플리케이션의 경우 WebAssembly로 얻는 이점이 미미하기 때문에 투자대비 효율이 좋지 않을 수 있습니다. 현재 WebAssembly는 이미지 처리, 게임, 복잡한 알고리즘 등 **무거운 동작**에 적합하며 바로 다음에 소개할 **PWA**와 결합되면 상당한 시너지 효과를 낼 수 있을 것으로 보입니다.
 
 ----
@@ -173,9 +176,9 @@ Lighthouse는 측정결과를 크게 다섯 가지 카테고리로 나누어 보
 - [컨텐츠가 채워지는 데 걸리는 시간](https://developers.google.com/web/tools/lighthouse/audits/speed-index?utm_source=lighthouse&utm_medium=devtools)
 - [CPU가 idle 상태로 진입하는 시간](https://developers.google.com/web/tools/lighthouse/audits/first-cpu-idle?utm_source=lighthouse&utm_medium=devtools)
 - [유저가 웹사이트와 interact가 가능해지는 시간](https://developers.google.com/web/tools/lighthouse/audits/time-to-interactive?utm_source=lighthouse&utm_medium=devtools)
-- [유저가 인풋의 지연시간](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency?utm_source=lighthouse&utm_medium=devtools)
+- [유저 인풋의 지연시간](https://developers.google.com/web/tools/lighthouse/audits/estimated-input-latency?utm_source=lighthouse&utm_medium=devtools)
 
-performance를 측정할 때 중요한 것은 측정을 시작하기 전에 **Throttling**을 설정해줄 필요가 있다는 것입니다. 우리는 서비스 항상 최적의 환경에서 실행될 것이라고 보장할 수 없습니다. 그러므로 서비스 제공자 입장에서는 최악의 상황을 기준으로 성능을 측정하는 것이 더 적합하다고 생각합니다. 
+performance를 측정할 때 중요한 것은 측정을 시작하기 전에 **Throttling**을 설정해줄 필요가 있다는 것입니다. 우리는 서비스가 항상 최적의 환경에서 실행될 것이라고 보장할 수 없습니다. 그러므로 서비스 제공자 입장에서는 최악의 상황을 기준으로 성능을 측정하는 것이 더 적합하다고 생각합니다. 
 
 ![throttling.png](/Google-IO-extended-web/throttling.png)
 
