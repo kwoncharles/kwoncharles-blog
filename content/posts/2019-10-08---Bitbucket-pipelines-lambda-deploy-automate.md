@@ -26,15 +26,15 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 생성된 키는 bitbucket 프로젝트의 환경변수로 저장할 것입니다. 환경변수로 저장할 값들은 다음과 같습니다
 
-1. `AWS\_ACCESS\_KEY`
+1. `AWS_ACCESS_KEY`
 
-2. `AWS\_SECRET\_ACCESS\_KEY`
+2. `AWS_SECRET_ACCESS_KEY`
 
-3. `AWS\_ROLE\_ARN`
+3. `AWS_ROLE_ARN`
 
     - AWS Lambda에 접근 가능한 role의 ARN이어야 합니다. 사용자(user)가 아니고 **역할(role)**의 ARN입니다.
   
-4. `AWS\_DEFAULT\_REGION`
+4. `AWS_DEFAULT_REGION`
 
     - 사용중인 region. 저는 ap-northeast-2입니다.
 --- 
