@@ -12,6 +12,8 @@ tags:
 description: "node-lambda 라이브러리를 이용해 AWS Lambda 배포를 간편하게 하는 방법을 알아봅니다."
 ---
 
+# Intro
+
 AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서 쉽게 만들고 수정할 수 있습니다. 
 
 하지만 코드 관리를 위해 Git을 사용하게 된다면 CLI(터미널)에서 배포를 하는 것이 편리할 것입니다.
@@ -20,15 +22,21 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 이번 글은 [Bitbucket](http://bitbucket.com)에서 Lambda Function 배포를 자동화하는 방법을 살펴보겠습니다.
 
----
+# How to do
 
 먼저 CLI 환경에서 Lambda Function 생성, 수정 등을 하기 위해서는 AWS 인증 키가 필요합니다. 해당 키는 Lambda 생성,수정에 대한 권한이 있는 키여야 합니다.
 
-생성된 키는 bitbucket 프로젝트의 환경변수로 저장할 것입니다. 환경변수로 저장할 값들은 다음과 같습니다
+> [AWS Key 발급받는 법](https://www.44bits.io/ko/post/publishing_and_managing_aws_user_access_key)
 
-1. `AWS_ACCESS_KEY`
 
-2. `AWS_SECRET_ACCESS_KEY`
+> **access\_key, secret\_key 는 노출되지 않도록 조심해야 합니다.**
+
+생성된 키는 bitbucket 프로젝트의 환경변수로 저장할 것입니다. 환경변수로 저장할 값들은 다음과 같습니다.
+
+
+1. `AWS_ACCESS_KEY` 
+
+2. `AWS_SECRET_ACCESS_KEY` 
 
 3. `AWS_ROLE_ARN`
 
@@ -58,7 +66,7 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 ![repositry_variables-min.png](/lambda-deploy-automate/repositry_variables-min.png)
 
-3. 여기에 위에서 말했던 값들을 Name/Value쌍을 등록합니다.
+6. 여기에 위에서 말했던 값들을 Name/Value쌍을 등록합니다.
 
 ![set_repository_variables-min.png](/lambda-deploy-automate/set_repository_variables-min.png)
 
@@ -157,8 +165,7 @@ pipelines:
 
 ![pipelines-ongoing-min.png](/lambda-deploy-automate/pipelines-ongoing-min.png)
 
----
-
+# Wrapping up
 이번 글에서는 node-labmda 라이브러리를 이용해 bitbucket에서 배포를 자동화할 수 있는 방법을 살펴봤습니다. 제가 소개한 방법 말고도 lambda를 배포하는 방법은 여러가지가 있습니다.
 
 가장 대표적인 방법은 [serverless-framework](https://serverless.com)를 이용하는 것입니다. serverless는 [API Gateway](https://console.aws.amazon.com/apigateway/home)도 통합적으로 관리할 수 있게 해줘서 lambda를 이용한 REST API 설계에 최적화돼있습니다.
