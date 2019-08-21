@@ -1,5 +1,5 @@
 ---
-title: Bitbucket pipelines를 이용해 AWS Lambda 배포 자동화하기
+title: Bitbucket pipelines를 이용해 AWS Lambda 배포하기
 date: "2019-08-10T11:19:02.169Z"
 template: "post"
 draft: false
@@ -20,7 +20,7 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 또한 배포 스크립트를 파일로 저장해 **한 번에** 실행시킬 수 있다면 더더욱 좋을 것입니다.
 
-이번 글은 [Bitbucket](http://bitbucket.com)에서 Lambda Function 배포를 자동화하는 방법을 살펴보겠습니다.
+이번 글은 [Bitbucket](http://bitbucket.com)에서 Lambda Function 배포를 간편하게 하는 방법을 살펴보겠습니다.
 
 # How to do
 
@@ -166,12 +166,12 @@ pipelines:
 ![pipelines-ongoing-min.png](/lambda-deploy-automate/pipelines-ongoing-min.png)
 
 # Wrapping up
-이번 글에서는 node-labmda 라이브러리를 이용해 bitbucket에서 배포를 자동화할 수 있는 방법을 살펴봤습니다. 제가 소개한 방법 말고도 lambda를 배포하는 방법은 여러가지가 있습니다.
+이번 글에서는 node-labmda 라이브러리를 이용해 bitbucket에서 배포를 간편하게 할 수 있는 방법을 살펴봤습니다. 제가 소개한 방법 말고도 lambda를 배포하는 방법은 여러가지가 있습니다.
 
 가장 대표적인 방법은 [serverless-framework](https://serverless.com)를 이용하는 것입니다. serverless는 [API Gateway](https://console.aws.amazon.com/apigateway/home)도 통합적으로 관리할 수 있게 해줘서 lambda를 이용한 REST API 설계에 최적화돼있습니다.
 
 저의 경우는 기존에 사용중이던 Lambda Function에 배포만 덧입혀야 하는 상황이어서 Lambda만 독립적으로 사용할 수 있는 방법을 찾다보니 node-lambda를 이용하게 됐습니다. 
 
-이 글에서 다룬 것은 Lambda 배포 자동화이지만 다른 AWS 서비스를 배포하는 법도 이와 유사한 프로세스를 갖고 있습니다. (AWS뿐만 아니라 다른 클라우드 서비스들도 그럴 것으로 보입니다)
+이 글에서 다룬 것은 Lambda 배포이지만 다른 AWS 서비스를 배포하는 것도 이와 유사한 프로세스를 갖고 있습니다. (AWS뿐만 아니라 다른 클라우드 서비스들도 그럴 것으로 보입니다)
 
  
