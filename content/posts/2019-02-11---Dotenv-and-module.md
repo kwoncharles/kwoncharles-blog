@@ -9,7 +9,7 @@ tags:
   - "JavaScript"
   - "es6"
   - "import"
-description: "ES6 import 문을 사용했을 때 Dotenv가 늦게 적용되는 문제가 발생했습니다. 원인을 알아보고 import문이 어떻게 동작하는지 알아보겠습니다."
+description: "ES6 import 문을 사용했을 때 Dotenv가 늦게 적용되는 문제가 발생했습니다. 원인을 알아보고 import문이 어떻게 동작하는지 살펴보겠습니다."
 ---
 
 ----
@@ -20,7 +20,7 @@ description: "ES6 import 문을 사용했을 때 Dotenv가 늦게 적용되는 �
 
 ## 사건의 발단
 
-얼마 전 회사에서 새로운 프로젝트를 시작했습니다. 프로젝트에서 사용되는 API 서버는 이번 프로젝트에서 새롭게 개발된 서버였습니다. 저는 API서버를 전달 받고 로컬에서 실행시킨 다음 클라이언트에서 요청을 보내봤습니다.
+얼마 전 회사에서 새로운 프로젝트를 시작했습니다. 저는 새롭게 개발된 API서버를 전달 받고 로컬에서 실행시킨 다음 클라이언트에서 요청을 보내봤습니다.
   
 엥 그런데 시작부터 에러가 떴습니다.
 
@@ -30,13 +30,13 @@ Access denied for user ''@'localhost' (using password: NO)
 ```
 > Error
 
-에러 메세지는 *'**접근 제한 에러**가 일어났는데 서버에서 프로미스 처리를 제대로 안 해줬다'* 이런 내용이었습니다. 
+에러 메세지는 *'**접근 제한 에러**가 일어났는데 서버에서 `Promise rejection` 처리를 제대로 안 해줬다'* 이런 내용이었습니다. 
 
 ----
 
 ## 원인을 찾아보자
 
-접근 제한이 일어난 곳을 찾기 위해 에러 메세지를 좀 더 살펴봤습니다. 그리고 의심되는 부분을 바로 찾았습니다.
+접근 제한이 일어난 곳을 찾기 위해 에러 메세지를 좀 더 살펴봤습니다. 그리고 의심되는 부분을 하나 찾았습니다.
 
 ```bash
 for user ''@'localhost'
@@ -46,7 +46,7 @@ for user ''@'localhost'
 
 아하, 환경변수가 제대로 처리되지 않았다는 것을 알게 됐습니다. 
 
-서버에서는 환경변수 설정을 위해 [dotenv](https://github.com/motdotla/dotenv#readme) 라이브러리를 사용중이었습니다. 코드에서 `dotenv`가 적용되는 부분은 `express` 서버 생성 파일과 함께 있었으며 다음과 같은 모습이었습니다.
+서버에서는 환경변수 설정을 위해 [dotenv](https://github.com/motdotla/dotenv#readme) 라이브러리를 사용중이었습니다. `dotenv`가 적용되는 로직은 `express` 서버 생성 코드와 함께 있었으며 다음과 같은 모습이었습니다.
 
 ```typescript
 require('dotenv').config();
@@ -56,7 +56,7 @@ import cors from 'cors';
 ```
 > index.js
 
-`dotenv` 를 적용하는 코드가 최상단에 있었고 다른 모듈을 가져오는 import문이 뒤따랐습니다.
+`dotenv.config()` 를 호출하는 코드가 최상단에 있었고 다른 모듈을 가져오는 import문이 뒤따랐습니다.
 
 순서로만 봤을 땐 `require('dotenv').config()` 에 의해 `.env` 파일에 들어있는 환경변수들이 먼저 적용되고, 그 이후에 import를 한 모듈들이 로딩될 것만 같았습니다.
 
@@ -93,7 +93,7 @@ DB_USER in index.js - username
 Listening on port 3001 👂🏻
 ```
 
-프로젝트 진입점 최상단에서 호출되는 `console.log` 보다 import구문을 통해서 불려지는 모듈안에서 호출되는 `console.log`가 먼저 실행되고 있었습니다.
+프로젝트 진입점 최상단에서 호출되는 `console.log` 보다 import구문을 통해서 로드된 모듈안에서 호출되는 `console.log`가 먼저 실행되고 있었습니다.
 
 이것으로 원인은 ***"무엇인가 때문에 환경변수가 늦게 적용되고 있다"*** 라고 가정할 수 있게 됐습니다. 그리고 문제의 `dotenv`는 다른 모듈과는 다르게 require 구문을 통해 불려지고 있었습니다. **CommonJS**의 require 과 **ES6**의 import , 둘 사이의 차이를 살펴봐야 할 시간이었습니다. 
 
@@ -148,15 +148,15 @@ require('dotenv');
 ```
 > index.js
 
-결국 ***require + 함수호출*** 조합인 환경변수 설정 코드는 import 구문보다 항상 나중에 실행될 수밖에 없는 상황입니다.
+결국 ***[require + 함수호출]*** 조합인 환경변수 설정 코드는 import 구문보다 항상 나중에 실행될 수밖에 없는 상황입니다.
 
 ----
 
 ### 여기서 잠깐
 
-글을 읽으시면서 이상하다고 느끼신 분이 분명 계실겁니다. 제가 API서버 코드를 받아서 실행했다고 했습니다.
+글을 읽으시면서 이상하다고 느끼신 분이 분명 계실겁니다. 제가 API서버 코드를 받아서 실행했다고 했습니다. 서버 개발자님께서는 잘 동작하는 API니까 저에게 전달해주셨을 것입니다.
 
-서버 개발자님 환경에서 이 코드가 잘 동작했던 이유는 [autoenv](https://beomi.github.io/2017/07/16/Use-Autoenv/) 라는 툴 때문입니다 `autoenv`가 CLI 레벨에서 `.env` 파일을 자동으로 인식하고 환경변수를 주입해줬기 때문에 `dotenv` 라이브러리가 동작하지 않아도 환경변수가 잘 등록됐던 것입니다.
+서버 개발자님 환경에서 이 코드가 잘 동작했던 이유는 [autoenv](https://beomi.github.io/2017/07/16/Use-Autoenv/) 라는 툴 때문입니다 `autoenv` 가 CLI 레벨에서 `.env` 파일을 자동으로 인식하고 환경변수를 주입해줬기 때문에 `dotenv` 라이브러리가 동작하지 않아도 환경변수가 잘 등록됐던 것입니다.
 
 ----
 
@@ -164,11 +164,11 @@ require('dotenv');
 
 자 그럼 이 문제를 어떻게 해결했을까요? `dotenv` 를 CLI에서 적용하는 방법 말고, 코드 내에서 import 구문의 특성을 이용해서 해결하는 방법을 찾고 싶었습니다.
 
-단순히 require 를 import 로 바꾸는 것은 해결방법이 아닙니다. 왜냐하면 `config()` 구문은 표현식(Expression)이기 때문에 호이스팅되는 import 보다 나중에 실행되기 때문이죠. *(표현식은 호이스팅되지 않음)*
+단순히 require 를 import 로 바꾸는 것은 해결방법이 아닙니다. 왜냐하면 `config()` 함수를 실행해야 최종적으로 환경변수가 적용되는데 함수호출은 표현식(Expression)이기 때문에 호이스팅되는 import 보다 나중에 실행되기 때문이죠. *(표현식은 호이스팅되지 않습니다)*
 
 ```typescript
-import dotenv from 'dotenv';
-dotenv.config(); // 표현식이기 때문에 import보다 늦게 실행됨
+import Dotenv from 'dotenv';
+Dotenv.config(); // 표현식이기 때문에 import보다 늦게 실행됨
 import UserDataController from 'controllers/user';
 ```
 > index.js
@@ -198,7 +198,9 @@ DB_USER in index.js - username
 Listening on port 3001 👂🏻
 ``` 
 
-`console.log` 는 표현식이기 때문에 여전히 `config.js` 에서 실행한 출력이 먼저 이루어지고 있지만 환경변수는 정상적으로 등록돼있는 것을 볼 수 있습니다!
+**환경변수가 정상적으로 등록돼있는 것을 볼 수 있습니다!**
+
+(여전히 `config.js` 에서 실행한 출력이 먼저 실행된 이유는 `console.log` 는 표현식이기 때문이겠죠?)
 
 ----
 
