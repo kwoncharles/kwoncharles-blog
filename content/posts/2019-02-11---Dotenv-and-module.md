@@ -102,7 +102,7 @@ Listening on port 3001 👂🏻
 
 결론부터 말씀드리면 원인은 import 구문의 [호이스팅](https://developer.mozilla.org/ko/docs/Glossary/Hoisting)이었습니다.
 
-import 구문은 같은 코드 블록 내에서는 위치에 상관 없이 require 구문보다 먼저 실행됩니다. **import 구문은 호이스팅되고 require 구문은 호이스팅되지 않기 때문입니다.**
+import 구문은 같은 코드 블록 내에서는 위치에 상관 없이 require 구문보다 먼저 실행됩니다. [import 구문은 호이스팅되고](http://www.ecma-international.org/ecma-262/6.0#sec-moduledeclarationinstantiation) require 구문은 호이스팅되지 않기 때문입니다.
 
 > *(생각해보니 require 구문은 변수에 할당이 가능한 표현식(Expression)이고 import는 할당이 아닌 선언문(statement)이므로 그렇게 동작하는 것이 맞는 듯합니다...)*
 

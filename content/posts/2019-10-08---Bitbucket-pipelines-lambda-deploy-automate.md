@@ -24,7 +24,7 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 # How to do
 
-먼저 CLI 환경에서 Lambda Function 생성, 수정 등을 하기 위해서는 AWS 인증 키가 필요합니다. 해당 키는 Lambda 생성,수정에 대한 권한이 있는 키여야 합니다.
+먼저 CLI 환경에서 Lambda Function 생성, 수정 등을 하기 위해서는 AWS 인증키가 필요합니다. 해당 키는 Lambda 생성,수정에 대한 권한이 있는 키여야 합니다.
 
 > [AWS Key 발급받는 법](https://www.44bits.io/ko/post/publishing_and_managing_aws_user_access_key)
 
@@ -34,9 +34,9 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 생성된 키는 bitbucket 프로젝트의 환경변수로 저장할 것입니다. 환경변수로 저장할 값들은 다음과 같습니다.
 
 
-1. `AWS_ACCESS_KEY` 
+1. `AWS_ACCESS_KEY`
 
-2. `AWS_SECRET_ACCESS_KEY` 
+2. `AWS_SECRET_ACCESS_KEY`
 
 3. `AWS_ROLE_ARN`
 
@@ -58,25 +58,25 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 ![pipeline_setting-min.png](/lambda-deploy-automate/pipeline_setting-min.png)
 
-4. Enable Pipelines를 활성화시킵니다.
+4. Enable Pipelines를 `on` 상태로 설정해줍니다.
 
 ![enable_pipelines-min.png](/lambda-deploy-automate/enable_pipelines-min.png)
 
-5. 이제 환경변수를 등록해야 합니다. 다시 왼쪽 메뉴에서 `Repository variables` 를 클릭합니다.
+5. 이제 환경변수를 등록해야 합니다. 왼쪽 메뉴에서 `Repository variables` 를 클릭합니다.
 
 ![repositry_variables-min.png](/lambda-deploy-automate/repositry_variables-min.png)
 
-6. 여기에 위에서 말했던 값들을 Name/Value쌍을 등록합니다.
+6. 여기에 발급받은 AWS Key들을 Name/Value쌍으로 입력합니다.
 
 ![set_repository_variables-min.png](/lambda-deploy-automate/set_repository_variables-min.png)
 
 ## bitbucket-pipelines.yml 파일 생성
 
-환경변수 마쳤다면 bitbucket이 인식할 수 있는 배포 스크립트를 만들어줘야 합니다.
+환경변수 등록을 마쳤다면 bitbucket이 인식할 수 있는 배포 스크립트를 만들어줘야 합니다.
 
 프로젝트 최상단 폴더에서`bitbucket-pipelines.yml` 라는 파일을 생성합니다.
 
-파일명이 **pipelines** 인걸 보면 알 수 있 듯이 여러 개의 파이프라인을 정의할 수 있습니다.
+> 파일명이 **pipelines** 인걸 보면 알 수 있 듯이 여러 개의 파이프라인을 정의할 수 있습니다.
 
 이 파일에 배포 스크립트를 정의하면 bitbucket 프로젝트 페이지에서 이를 실행시킬 수 있습니다. 
 
