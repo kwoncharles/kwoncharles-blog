@@ -46,7 +46,7 @@ for user ''@'localhost'
 
 아하, 환경변수가 제대로 처리되지 않았다는 것을 알게 됐습니다. 
 
-서버에서 환경변수 설정을 위해 [dotenv](https://github.com/motdotla/dotenv#readme) 라이브러리를 사용중이었고 서버 인스턴스가 생성되는 부분에서 설정을 해주고 있었습니다. 코드에서 `dotenv`가 적용되는 부분은 다음과 같았습니다.
+서버에서는 환경변수 설정을 위해 [dotenv](https://github.com/motdotla/dotenv#readme) 라이브러리를 사용중이었습니다. 코드에서 `dotenv`가 적용되는 부분은 `express` 서버 생성 파일과 함께 있었으며 다음과 같은 모습이었습니다.
 
 ```typescript
 require('dotenv').config();
@@ -76,6 +76,7 @@ import cors from 'cors';
 > index.js
 
 ```typescript
+// config.js(에러가 발생한 모듈)
 export function getDbConfig() {
   console.log(`DB_USER in config.js - ${process.env.DB_USER}`);
 
@@ -151,6 +152,14 @@ require('dotenv');
 
 ----
 
+### 여기서 잠깐
+
+글을 읽으시면서 이상하다고 느끼신 분이 분명 계실겁니다. 제가 API서버 코드를 받아서 실행했다고 했습니다.
+
+서버 개발자님 환경에서 이 코드가 잘 동작했던 이유는 [autoenv](https://beomi.github.io/2017/07/16/Use-Autoenv/) 라는 툴 때문입니다 `autoenv`가 CLI 레벨에서 `.env` 파일을 자동으로 인식하고 환경변수를 주입해줬기 때문에 `dotenv` 라이브러리가 동작하지 않아도 환경변수가 잘 등록됐던 것입니다.
+
+----
+
 ## 문제 해결
 
 자 그럼 이 문제를 어떻게 해결했을까요? `dotenv` 를 CLI에서 적용하는 방법 말고, 코드 내에서 import 구문의 특성을 이용해서 해결하는 방법을 찾고 싶었습니다.
@@ -164,7 +173,7 @@ import UserDataController from 'controllers/user';
 ```
 > index.js
 
-`UserDataController` 를 나중에 import 하는 것도 방법일 수 있지만 우선 그대로 두고 문제를 해결해보고자 합니다.
+`UserDataController` 를 동적으로 import 하는 것도 방법일 수 있지만 우선 그대로 두고 문제를 해결해보고자 합니다.
 
 제가 선택한 방법은 `dotenv` 를 config하는 모듈을 따로 정의하는 것입니다.
 
@@ -179,7 +188,17 @@ require('dotenv').config();
 ```
 > dotenv.js
 
-호이스팅이 되는 선언문(statement)끼리는 순서가 유지되기 때문에 `import './dotenv'` 가 가장 먼저 실행되게 됩니다. 또한 위에서 보았듯 자식 모듈까지 모두 불러온 뒤에 다음 코드가 실행되므로 `UserDataController` 모듈이 불려올 때는 환경변수가 모두 설정되어있을 것입니다.
+호이스팅이 되는 선언문(statement)끼리는 순서가 유지되기 때문에 `import './dotenv'` 가 가장 먼저 실행되게 됩니다. 또한 위에서 보았듯 모듈을 'import' 하면 그 모듈의 자식 모듈까지 모두 불러온 뒤에 다음 'import'가 실행되므로 `UserDataController` 모듈이 불려올 때는 환경변수가 모두 설정되어있을 것입니다.
+
+이제 다시 환경변수를 console에 출력해보겠습니다. 결과는 다음과 같습니다.
+ 
+``` bash
+DB_USER in config.js - username
+DB_USER in index.js - username
+Listening on port 3001 👂🏻
+``` 
+
+`console.log` 는 표현식이기 때문에 여전히 `config.js` 에서 실행한 출력이 먼저 이루어지고 있지만 환경변수는 정상적으로 등록돼있는 것을 볼 수 있습니다!
 
 ----
 

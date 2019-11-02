@@ -35,16 +35,14 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 
 1. `AWS_ACCESS_KEY`
-
+> 
 2. `AWS_SECRET_ACCESS_KEY`
-
+> 
 3. `AWS_ROLE_ARN`
-
-    - AWS Lambda에 접근 가능한 role의 ARN이어야 합니다. 사용자(user)가 아니고 **역할(role)**의 ARN입니다.
+>  AWS Lambda에 접근 가능한 role의 ARN이어야 합니다. 사용자(user)가 아니고 **역할(role)**의 ARN입니다.
   
 4. `AWS_DEFAULT_REGION`
-
-    - 사용중인 region. 저는 ap-northeast-2입니다.
+> 사용중인 region. 저는 ap-northeast-2입니다.
 --- 
 
 환경변수는 Bitbucket에서 해당 repository의 설정 메뉴에서 `repository variable` 메뉴에서 설정할 수 있습니다.
@@ -54,7 +52,7 @@ AWS Lambda 함수는 [AWS 웹사이트](https://aws.amazon.com/ko/lambda/)에서
 
 ![setting_button-min.png](/lambda-deploy-automate/setting_button-min.png)
 
-3. 왼쪽 메뉴의 PIPELINES 카테고리에서 `Settings` 를 클릭합니다
+3. 왼쪽 메뉴의 PIPELINES 카테고리에서 `Settings` 를 클릭합니다.
 
 ![pipeline_setting-min.png](/lambda-deploy-automate/pipeline_setting-min.png)
 
@@ -121,11 +119,11 @@ pipelines:
 
 2. `cd function1` , `npm install`
 
-    `function1` 폴더로 들어가 `package.json` 에 있는 모듈들을 설치합니다
+    `function1` 폴더로 들어가 `package.json` 에 있는 모듈들을 설치합니다.
 
 3. `npm install node-lambda -g` 
 
-    람다 배포를 진행해줄 `node-lambda` 라이브러리를 설치합니다
+    람다 배포를 진행해줄 `node-lambda` 라이브러리를 설치합니다.
 
 4. `node-lambda` 를 이용해 배포합니다.
 
