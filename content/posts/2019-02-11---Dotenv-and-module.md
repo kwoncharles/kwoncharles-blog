@@ -148,7 +148,8 @@ require('dotenv');
 ```
 > index.js
 
-결국 ***[require + 함수호출]*** 조합인 환경변수 설정 코드는 import 구문보다 항상 나중에 실행될 수밖에 없는 상황입니다.
+
+이 상황에서 환경변수 설정 코드는 import 구문보다 항상 나중에 실행될 수밖에 없습니다.
 
 ----
 
@@ -156,7 +157,7 @@ require('dotenv');
 
 글을 읽으시면서 이상하다고 느끼신 분이 분명 계실겁니다. 제가 API서버 코드를 받아서 실행했다고 했습니다. 서버 개발자님께서는 잘 동작하는 API니까 저에게 전달해주셨을 것입니다.
 
-서버 개발자님 환경에서 이 코드가 잘 동작했던 이유는 [autoenv](https://beomi.github.io/2017/07/16/Use-Autoenv/) 라는 툴 때문입니다 `autoenv` 가 CLI 레벨에서 `.env` 파일을 자동으로 인식하고 환경변수를 주입해줬기 때문에 `dotenv` 라이브러리가 동작하지 않아도 환경변수가 잘 등록됐던 것입니다.
+서버 개발자님 환경에서 이 코드가 잘 동작했던 이유는 서버 개발자님 환경에 설치돼있던 [autoenv](https://beomi.github.io/2017/07/16/Use-Autoenv/) 라는 툴 때문입니다. `autoenv` 가 CLI 레벨에서 `.env` 파일을 자동으로 인식하고 환경변수를 주입해줬기 때문에 `dotenv` 라이브러리가 동작하지 않아도 환경변수가 잘 등록됐던 것입니다.
 
 ----
 
@@ -175,18 +176,18 @@ import UserDataController from 'controllers/user';
 
 `UserDataController` 를 동적으로 import 하는 것도 방법일 수 있지만 우선 그대로 두고 문제를 해결해보고자 합니다.
 
-제가 선택한 방법은 `dotenv` 를 config하는 모듈을 따로 정의하는 것입니다.
+제가 선택한 방법은 `dotenv` 를 config하는 로직을 다른 파일에 두고 그 파일을 import로 가져오는 것입니다.
+
+```typescript
+require('dotenv').config();
+```
+> dotenv.js
 
 ```typescript
 import './dotenv';
 import UserDataController from 'controllers/user';
 ```
 > index.js
-
-```typescript
-require('dotenv').config();
-```
-> dotenv.js
 
 호이스팅이 되는 선언문(statement)끼리는 순서가 유지되기 때문에 `import './dotenv'` 가 가장 먼저 실행되게 됩니다. 또한 위에서 보았듯 모듈을 'import' 하면 그 모듈의 자식 모듈까지 모두 불러온 뒤에 다음 'import'가 실행되므로 `UserDataController` 모듈이 불려올 때는 환경변수가 모두 설정되어있을 것입니다.
 
