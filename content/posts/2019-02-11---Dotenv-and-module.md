@@ -6,7 +6,7 @@ draft: false
 slug: "/posts/dotenv-and-module"
 category: "Tech"
 tags:
-  - "JavaScript"
+  - "javascript"
   - "es6"
   - "import"
 description: "ES6 import 문을 사용했을 때 Dotenv가 늦게 적용되는 문제가 발생했습니다. 원인을 알아보고 import문이 어떻게 동작하는지 살펴보겠습니다."

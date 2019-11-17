@@ -11,17 +11,17 @@ type Props = {
 }
 
 const Tags = ({ tags }: Props) => (
-  <div className={""}>
-    <ul>
-      {tags.map(tag => (
-        <li>
+  <div>
+    {/* <ul> */}
+      {tags.map((tag) => (
+        // <li>
           <Link to={`tag/${tag.fieldValue.toLowerCase().split(' ').join('-')}`} >
-            {tag.fieldValue}{` (${tag.totalCount})`}
+            {tag.fieldValue}{` (${tag.totalCount}), `}
           </Link>
-        </li>
+        // </li>
       ))}
-    </ul>
+    {/* </ul> */}
   </div>
-)
+);
 
 export default Tags;

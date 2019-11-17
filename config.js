@@ -11,13 +11,17 @@ module.exports = {
   googleAnalyticsId: 'UA-73379983-2',
   menu: [
     {
+      label: 'About me',
+      path: '/pages/about'
+    },
+    {
       label: 'Post',
       path: '/'
     },
     {
-      label: 'About me',
-      path: '/pages/about'
-    },
+      label: 'Tags',
+      path: '/tags',
+    }
     // {
     //   label: 'Contact me',
     //   path: '/pages/contacts'
