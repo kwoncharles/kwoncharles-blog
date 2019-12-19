@@ -64,6 +64,7 @@ function* getUser(id) {
 
 ```javascript
 // SSR 코드 예제
+// preload.js
 
 const routes = [
   ...
@@ -84,64 +85,108 @@ const routes = [
 
 > *사실 이런 경우만 예외로 Promise를 사용하도록 한다면 쉽게 해결될 문제이긴 합니다만,,*
 
+## Saga -> Promise
 
-## 전통적인 해결법
+redux-saga를 만드는 사람들은 [초창기부터](https://github.com/redux-saga/redux-saga/issues/13) 이러한 이슈를 예상했고, saga [Task를 promise로 변환하는 방법](https://github.com/redux-saga/redux-saga/issues/13#issuecomment-167006148)을 제공하였습니다.
 
-redux-saga는 **4년** 넘게 사용돼왔습니다. 그리고 위와 같은 이슈는 [초창기부터](https://github.com/redux-saga/redux-saga/issues/13) 존재했습니다. redux-saga는 사실 제너레이터를 Promise로 다룰 수 있는 방법을 [일찍이 제공](https://github.com/redux-saga/redux-saga/issues/13#issuecomment-166953222)하고 있었습니다. 
+최신(v1.1.1) redux-saga 문법으로 표현하면 대략 다음과 같은 모습입니다.
 
-다음과 같은 모습입니다.
-
-```jsx
-import runSaga from 'redux-saga'
-import sagas from '../sagas' // [saga1, saga2, ...]
-
-const sagaMiddleware = runSaga(...sagas)
-
-// 대기중인 제너레이터 함수들을 각각의 Promise로 관리.
-// 해당 saga의 제너레이터가 종료되면 promise가 resolve된다.
-const [saga1, ...] = sagaMiddleware.promises
-```
-
-하지만 이 방법은 SSR에 적합한 방법은 아니었습니다.
-
-`sagaMiddleware.promises` 가 반환하는 프로미스의 개수는 서비스가 고도화될수록 **점점 많아질 것입니다.** 그리고 우리는 웹서버에서의 API 호출이 필요한 새로운 **상황이 생길 때마다** `sagaMiddleware.promises` 가 반환하는 Promise 중 알맞은 것을 골라내어 **별도로 처리**를 해줘야만 합니다.
 
 ```jsx
+// createClientHTML.jsx
 
-const sagaMiddleware = runSaga(...sagas);
-const [productSaga, userSaga, ...] = sagaMiddleware.promises;
+async function createClientHTML({ path, url }) {
+  const { store, runSaga } = configure();
+  const task = runSaga(rootSaga);
 
-// 경로에 알맞은 saga를 기다려야한다.
-switch (path) {
-  case: '/user':
-    userSaga.then(() => {
-      ...
-    });
-    break;
-  case: '/product':
-    productSaga.then(() => {
-      ...
-    });
-    break;
-  ...
+  // 현재 경로에 필요한 Action을 dispatch하는 함수.
+  // 위에서 보았던 `getUser`를 호출하는 부분이다.
+  perload(path);
+
+  // preload에서 호출되어 saga에게 전달된 Action이 끝나기를 기다린다.
+  await task.done;
+
+  const html = await renderToString(
+    <Provider store={store}>
+      <StaticRouter context={context} location={url}>
+        <App />
+      </StaticRouter>
+    </Provider>
+  );
+
+  return html;
 }
 
-// ... 중략
-
-const html = await renderToString(
-  <Provider store={store}>
-    <StaticRouter context={context} location={url}>
-      <App />
-    </StaticRouter>
-  </Provider>
-);
-
-// ... 생략
 ```
-> 별도로 처리해야하는 이유는 호출한 saga를 제외한 다른 saga들의 promise는 **resolve되지 않을 것**이기 때문입니다.
 
 ---
 
-## 조금 더 깔끔하게, END
+그런데... 과연 `task.done`은 resolve 될 수 있을까요? 
+
+안타깝게도 프로그램이 종료되지 않는 이상 `task.done`은 **resolve되지 않습니다.**
+
+일반적으로 redux에서 하나의 action을 **한 번만 호출하지는 않습니다.** 같은 action이라 하더라도 여러번 호출할 수 있도록 만드는 것이 일반적입니다.
+
+redux-saga에서 action을 여러번 호출할 수 있도록 하려면 다음과 같은 패턴으로 코드를 작성해야 합니다.
+
+
+```javascript
+function* watchGetUser() {
+  while(true) {
+    yield take(GET_USER_ACTION);
+    yield fork(getUser);
+  }
+}
+```
+
+`watchGetUser` 함수는 `GET_USER_ACTION` 을 기다리는 역할을 하는 ***watcher*** 함수입니다. 제너레이터 함수이며 동작 방식은 위에서 설명했던 `getUser`와 유사합니다.
+
+다음과 같은 순서로 동작합니다.
+
+- `take` 구문은 파라미터로 전달된 `GET_USER_ACTION`이 오기 전까지 기다립니다.
+
+- `GET_USER_ACTION` action이 불리면 `watchGetUser`가 실행 context를 얻게되어 두 번째 줄의 `fork(getUser)`를 실행합니다. 
+
+- `fork` 작업이 끝나면 **while**에 의해 다시 action을 기다리는 `take` 구문이 실행됩니다.
+
+- 1 ~ 3을 반복합니다.
+
+
+위에서 보았던 `task.done`은 `watchGetUser` 같은 watcher 함수들이 종료됐을 때 resolve되는 Promise입니다.
+
+그런데 보시다시피 ***watcher*** 함수는 `while(true)`내부에 갇혀있습니다. 
+
+프로그램을 임의로 종료시키지 않는 이상 `task.done` 은 절대 resolve되지 않을 것입니다. 😢
+
+
+## 종결자, END
 
 2016년 4월, redux-saga 이슈 게시판에 [API Proposal](https://github.com/redux-saga/redux-saga/issues/255)이 하나 올라왔습니다. `END` 라는 Action을 프로젝트 내에 포함할 것을 제안하는 내용이었습니다. 
+
+`END` 의 주용도는 saga에게 action을 전달해주는 channel을 종료시키는 것입니다. (action을 기다리고 있는 saga의 watcher를 종료시킨다고 이해해도 좋습니다)
+
+액션이 전달되는 channel을 종료시키면 우리가 원하는 바를 이룰 수 있을 것입니다. channel이 종료되면 모든 watcher도 종료되기 때문입니다.
+
+참고로 `END` Action을 dispatch 하더라도 실행중인 task는 끝가지 실행됩니다. 때문에 우리가 호출한 `getUser`는 끝까지 수행될 것입니다.
+
+
+```jsx
+const { path } = ctx;
+const { store, runSage } = configureStore();
+const task = runSaga(rootSaga);
+
+/**
+ * 경로에 맞는 fetch action 수행
+ * 위에서 보았던 예제로 치면 `getUserById`를 호출한다.
+ **/
+preload(path);
+
+// END 액션을 Dispatch하여 channel을 닫는다. (Action을 기다리고 있는 watcher들을 종료시킨다)
+store.dispatch(END);
+
+// 참고로 이전 예제에서의 `.promises`는 과거 문법이고 아래 예제는 새로운 문법 `.toPromise()`를 사용했습니다.
+await task.toPromise();
+
+// Promise는  resolve된 
+
+```
