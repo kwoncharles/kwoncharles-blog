@@ -13,7 +13,7 @@ tags:
 description: "제너레이터 기반으로 동작하는 redux-saga는 SSR(Server Side Rendering)에서 어떻게 동작해야 할까요?"
 ---
 
-> ### 이 글은 react + redux + redux-saga 환경에서의 SSR에 대해 이야기합니다.
+> ### 이 글은 react + redux + redux-saga 환경에서의 SSR에 대해 이야기합니다. SSR과 redux에 대한 기본 지식이 있는 분들을 대상으로 작성했습니다.
 
 
 ## Intro
@@ -43,9 +43,11 @@ function* getUser(id) {
   // 1. getUserById API 호출
   const data = yield call(UserAPI.getUserById, id);
 
-  // 2. API 호출 이후 실행 context가 getUser를 호출한 곳으로 돌아간다.
-  // 3. getUserById API 응답이 오면 다시 실행 context를 얻게 되고
-  //    아래 코드를 마저 실행한다.
+/**
+ * 2. API 호출 이후 실행 context가 getUser를 호출한 곳으로 돌아간다.
+ * 3. getUserById API 응답이 오면 다시 실행 context를 얻게 되고
+ *    아래 코드를 마저 실행한다.
+ */
 
   yield put({
     type: 'user/SET_USER',
