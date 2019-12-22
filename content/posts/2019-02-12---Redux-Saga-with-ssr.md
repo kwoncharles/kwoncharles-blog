@@ -39,15 +39,14 @@ redux-saga에서 API 호출 및 응답을 처리하는 코드는 대략 다음�
 ```javascript
 // 제너레이터 함수(*)인 것을 주목하세요. 
 
-function* getUser() {
-  // 1. getUser API 호출
-  const { user } = yield call(UserAPI.getUser);
+function* getUserById(id) {
+  // 1. getUserById API 호출
+  const { user } = yield call(UserAPI.getUserById, id);
 
-/**
- * 2. API 호출 이후 context가 현재 함수를 호출한 곳으로 돌아간다.
- * 3. getUser API 응답이 오면 다시 context를 얻게 되고
- *    아래 코드를 마저 실행한다.
- */
+  // 2. API 호출 이후 context가 현재 함수를 호출한 곳으로 돌아간다.
+  // 3. getUserById API 응답이 오면 다시 context를 얻게 되고
+  //   아래 코드를 마저 실행한다.
+ 
 
   yield put({
     type: SET_USER,
@@ -58,9 +57,9 @@ function* getUser() {
 }
 ```
 
-주석 2~3번에 나와있듯이 제너레이터 함수는 API호출 이후 context를 반환합니다. (`yield` 키워드를 사용했기 때문)
+주석 2~3번에 나와있듯이 제너레이터 함수는 API호출 이후 context를 반환합니다. (제너레이터의 `yield` !)
 
-그리고 API 응답이 오면 redux-saga가 다시 현재 함수를 호출하여 context를 얻고, 나머지 코드를 마저 실행합니다. 
+그리고 API 응답이 오면 다시 현재 함수가 context를 얻고, 나머지 코드를 마저 실행합니다. 
 
 그런데 이렇게 되면 서버렌더링을 할 때 웹서버가 API 호출 응답이 오기전에 HTML을 만들어버리게 됩니다. 
 
@@ -73,8 +72,11 @@ const routes = [
   {
     path: '/user/:id',
     preload: async (ctx, store, match) => {
-      // 1. getUser 호출 
-      UserActions.getUser(ctx.params.id);
+      // 1. getUserById 호출 
+      store.dispatch({
+        type: 'user/GET_USER_BY_ID',
+        id: ctx.params.id,
+      })
 
       // 2. 제너레이터 함수가 API 호출 이후 context를 돌려줬기 때문에
       //    API 응답이 오기 전에 return문이 실행되고 HTML 문서 생성
@@ -102,7 +104,7 @@ async function createClientHTML({ path, url }) {
   const task = runSaga(rootSaga);
 
   // 현재 경로에 필요한 Action을 dispatch하는 함수.
-  // 위에서 보았던 `getUser`를 호출하는 부분이다.
+  // 위에서 보았던 `getUserById`를 호출하는 부분이다.
   perload(path);
 
   // preload에서 호출되어 saga에게 전달된 Action이 끝나기를 기다린다.
@@ -134,21 +136,21 @@ redux-saga에서 Action을 여러번 호출할 수 있도록 하려면 다음과
 
 
 ```javascript
-function* watchGetUser() {
+function* watchGetUserById() {
   while(true) {
-    yield take(GET_USER);
-    yield fork(getUser);
+    const { payload } = yield take(GET_USER_BY_ID);
+    yield fork(getUserById, payload.id);
   }
 }
 ```
 
-`watchGetUser` 함수는 `GET_USER` Action을 기다리는 역할을 하는 ***watcher*** 함수입니다. 제너레이터 함수이며 동작 방식은 위에서 설명했던 `getUser`와 유사합니다. ( `yield`를 통해 어디까지 실행됐었는지 기억합니다)
+`watchGetUserById` 함수는 `GET_USER_BY_ID` Action을 기다리는 역할을 하는 ***watcher*** 함수입니다. 제너레이터 함수이며 동작 방식은 위에서 설명했던 `getUserById`와 유사합니다. ( `yield`를 통해 어디까지 실행됐었는지 기억합니다)
 
 다음과 같은 순서로 동작합니다.
 
-- `take` operator는 파라미터로 전달된 `GET_USER` Action이 불려질 때까지 기다립니다.
+- `take` operator는 파라미터로 전달된 `GET_USER_BY_ID` Action이 불려질 때까지 기다립니다.
 
-- `GET_USER` Action이 불리면 `watchGetUser`가 실행 context를 얻게되어 두 번째 줄의 `yield fork(getUser)`를 실행합니다. 
+- `GET_USER_BY_ID` Action이 불리면 `watchGetUserById`가 실행 context를 얻게되어 두 번째 줄의 `yield fork(getUserById)`를 실행합니다. 
 
 - `fork` 작업이 끝나면 **while**에 의해 다시 Action을 기다리는 `take` 구문이 실행됩니다.
 
@@ -172,15 +174,15 @@ watcher함수에게 전달되는 액션은 모두 channel을 거치게 되는데
 
 결국 `take`하고 있는 Task들은 모두 종료된 것으로 처리됩니다. (resolve!)
 
-참고로 `END` 로 인해 채널이 종료되더라도 `take`가 아닌 `fork`, `call` 등을 통해 실행중이었던 Task가 있다면 끝까지 실행됩니다. 따라서 우리가 `fork`를 통해 호출한 `getUser`는 끝까지 수행될 것입니다.
+참고로 `END` 로 인해 채널이 종료되더라도 `take`가 아닌 `fork`, `call` 등을 통해 실행중이었던 Task가 있다면 끝까지 실행됩니다. 따라서 우리가 `fork`를 통해 호출한 `getUserById`는 끝까지 수행될 것입니다.
 
-getUser의 작업이 끝이나면, `task.done`은 마침내 resolve 됩니다.
+getUserById의 작업이 끝이나면, `task.done`은 마침내 resolve 됩니다.
 
 
 ```jsx
-import { END } from 'redux-saga'; // Default로 제공하는 Action
-
 // createClientHTML.jsx
+
+import { END } from 'redux-saga';
 
 async function createClientHTML({ path, url }) {
   const { store, runSaga } = configure();
@@ -212,9 +214,9 @@ async function createClientHTML({ path, url }) {
 
 Redux Devtools로 명확한 플로우를 보여드리기 위해 `END`를 클라이언트에서 사용해보겠습니다.
 
-결과는 대략 아래와 같습니다. `preload` 함수를 통해 `GET_USER` Action이 불리고, `END` Action이 뒤따라 불립니다.
+결과는 대략 아래와 같습니다. `preload` 함수를 통해 `GET_USER_BY_ID` Action이 불리고, `END` Action이 뒤따라 불립니다.
 
-`END` Action이 불린 이후엔 watcher들이 모두 종료됩니다. 하지만 기존에 실행중이었던 task는 끝까지 실행되기 때문에, `getUser` 제너레이터 함수는 `SET_USER` 까지 마무리를 짓습니다. 
+`END` Action이 불린 이후엔 watcher들이 모두 종료됩니다. 하지만 기존에 실행중이었던 task는 끝까지 실행되기 때문에, `getUserById` 제너레이터 함수는 `SET_USER` 까지 마무리를 짓습니다. 
 
 ![inspector.png](/saga-with-ssr/inspector.png)
 
