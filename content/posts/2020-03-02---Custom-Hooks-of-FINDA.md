@@ -8,14 +8,14 @@ category: "Tech"
 tags:
   - "hooks"
   - "react"
-description: "+ Custom Hooks로 적합한 것과 그렇지 않은 것"
+description: "Custom Hooks로 적합한 것과 그렇지 않은 것"
 ---
 
 이 글은 핀다 프론트엔드 팀에서 사용하는 **custom hooks** 몇 가지와 어떤 것을 custom hook으로 만들어야 하는지에 대해서 이야기합니다.
 
 ---
 
-2019년 초, React Hooks가 정식으로 릴리즈 된 이후 많은 서비스들이 빠르게 hooks를 도입하였습니다. 핀다도 작년 4분기, 네이티브 웹뷰 개발 프로젝트를 시작으로 최근 런칭한 [웹 최저금리 조회 서비스](!https://service.finda.co.kr/loan-application/web)까지 대부분의 프로젝트에서 hooks를 적극 도입하여 사용하고 있습니다.
+2019년 초, React Hooks가 정식으로 릴리즈 된 이후 많은 서비스들이 빠르게 hooks를 도입하였습니다. 핀다도 작년 4분기, 네이티브 웹뷰 개발 프로젝트를 시작으로 최근 런칭한 [웹 최저금리 조회 서비스](https://service.finda.co.kr/loan-application/web)까지 대부분의 프로젝트에서 hooks를 적극 도입하여 사용하고 있습니다.
 일반적으로 hooks의 장점으로 꼽히는 것들은 다음과 같습니다.
 
 1. 클래스 컴포넌트보다 적은 양의 코드로 동일한 로직을 구현할 수 있다.
@@ -26,21 +26,21 @@ description: "+ Custom Hooks로 적합한 것과 그렇지 않은 것"
 
 특히 세 번째로 언급한 상태관리 로직의 재활용은 hooks의 꽃이라고 할 수 있으며 오늘 이야기할 custom hooks와 관련이 깊습니다.
 
-# Rules of Hooks
-Hooks가 위와 같은 매력적인 장점들을 얻기 위해서는 [Rules of Hooks](!https://reactjs.org/docs/hooks-rules.html) 라고 소개된 몇 가지 규칙들을 준수해야 합니다.
+## Rules of Hooks
+Hooks가 위와 같은 매력적인 장점들을 얻기 위해서는 [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html) 라고 소개된 몇 가지 규칙들을 준수해야 합니다.
 
 React에서 기본으로 제공하는 Hooks(`useState`, `useEffect`, `useReducer`···)는 Rules of Hooks만 지켜준다면 크게 문제될 것이 없습니다.
 
 하지만 오늘 이야기할 custom hooks는 조금 다릅니다. 몇 가지 규칙을 더 고려해주어야 합니다. 만약 이를 고려하지 않고 custom hooks를 잘못 정의하여 사용한다면 **예측하지 못한 동작**들을 만들어 낼뿐만 아니라, **디버깅**까지 어렵게 만들 수 있습니다.
 
-이 글 후반부에서는 Dan abramov씨가 [블로그 포스트](!https://overreacted.io/ko/why-isnt-x-a-hook/)에서 제시한 관점을 기준으로 어떤 것이 custom hook으로 적합하고, 적합하지 않은지에 대해서 이야기 할 것입니다.
+이 글 후반부에서는 Dan abramov씨가 [블로그 포스트](https://overreacted.io/ko/why-isnt-x-a-hook/)에서 제시한 관점을 기준으로 어떤 것이 custom hook으로 적합하고, 적합하지 않은지에 대해서 이야기 할 것입니다.
 
 
 ---
 
 이제 핀다가 쓰고 있는 custom hooks를 몇 가지 살펴보겠습니다.
 
-# usePrevious
+## usePrevious
 
 ```typescript
 import { useEffect, useRef } from 'react';
@@ -84,11 +84,11 @@ function MyComponent() {
 
 참고로 `usePrevious` 내부에서 값을 저장할 때 `useState` 가 아닌 `useRef` 를 쓴 이유는 불필요한 re-rendering을 방지하기 위해서입니다. `usePrevious` 가 반환하는 값은 바로 당장 UI를 그리는 데에는 영향을 주지 않기 때문에 `usePrevious` 내부에서의 값 변경이 re-rendering을 유발하게 두어서는 안됩니다.
 
-> useState 의 값 변경은 re-rendering을 유발하지만 useRef의 값 변경은 그렇지 않습니다. ([관련링크](!https://www.codebeast.dev/usestate-vs-useref-re-render-or-not/))
+> useState 의 값 변경은 re-rendering을 유발하지만 useRef의 값 변경은 그렇지 않습니다. ([관련링크](https://www.codebeast.dev/usestate-vs-useref-re-render-or-not/))
 
 만약 `useState` 를 이용했다면 `alphabet` 값이 바뀔 때마다 렌더링이 두 번씩 일어날 것입니다. (`alphabet` 변경에 대한 re-rendering + `prevAlphabet` 변경에 대한 re-rendering)
 
-# useInput
+## useInput
 
 `useInput`은 핀다에서 가장 많이 사용하고 있는 custom hook입니다. 이름에서 알려주듯 input 컴포넌트와 함께 사용됩니다.
 
@@ -208,7 +208,7 @@ export default useInput;
 
 `useInput`과 유사한 hook으로 `useDropdown`, `useCheckList`도 사용하고 있습니다.
 
-# useDocumentOverflow
+## useDocumentOverflow
 
 글 초반에 custom hooks로 적절하지 않은 것이라고 판단된 hook이 있었다고 이야기 했습니다. `useDocumentOverflow`가 대표적인 예입니다.
 
@@ -251,7 +251,7 @@ function SomeComponent() {
 
 하지만 이 로직은 hook으로 만들기에는 **적합하지 않은 로직**이었습니다. 어떤 이유에서 그런 걸까요?
 
-# 동시에 사용할 수 있는가?
+## 동시에 사용할 수 있는가?
 
 `useDocumentOverflow`를 여러 컴포넌트에서 동시에 사용한다면 어떤 일이 일어날까요?
 
@@ -279,7 +279,7 @@ function C() {
 
 만약 규칙을 정하여, "최상단(혹은 최하단)에 있는 것이 우선권을 갖는다" 라고 하더라도 문제는 여전히 존재합니다.
 
-# 디버깅하기 쉬운가?
+## 디버깅하기 용이한가?
 
 만약 바로 위에서 본 예제처럼, 컴포넌트에서 직접 `useDocumentOverflow`를 호출한다면 디버깅에 큰 문제가 없을 것입니다.
 
@@ -288,7 +288,7 @@ A, B, C 컴포넌트 예제를 살짝 바꿔 각 컴포넌트가 아래 이미�
 만약 `overflow`값이 예상과 다르게 적용됐다면 원인을 찾기 위해 **탐험**을 시작해야 합니다.
 
 A 컴포넌트가 사용하는 hooks를 살펴본 후, 그 중 custom hooks가 있다면 모든 custom hooks의 내부를 살펴보고… 또 그 내부의 custom hooks를 살펴보고… B의 내부의 hooks를 (… 이하 생략)
-> [디버깅과 시간복잡도에 관한 글](!https://overreacted.io/ko/the-bug-o-notation/)
+> [디버깅과 시간복잡도에 관한 글](https://overreacted.io/ko/the-bug-o-notation/)
 
 ![photo](/custom-hooks-of-finda/custom-hooks-tree-example.png)
 > ####  O(n²) ,O( n³)…
@@ -298,18 +298,18 @@ A 컴포넌트가 사용하는 hooks를 살펴본 후, 그 중 custom hooks가 �
 
 그렇다면 `useDocumentOverflow`는 어떻게 써야할까요?
 
-애초에 모든로직을 hook으로 만들 필요는 없습니다. hooks가 주는 **명료함**에 매료되어 모든 로직을 hook으로 만들고자 하는 마음이 들 수도 있습니다. 하지만 hook으로 만들었을 때의 장점과 단점을 고민해 보는 단계가 필요합니다.
+애초에 모든로직을 hook으로 만들 필요는 없습니다. hooks가 주는 **명료함**에 매료되어 컴포넌트에서 사용하는 중복되는 모든 로직을 hook으로 만들고 싶은 마음이 들 수도 있습니다. 하지만 hook으로 만들었을 때의 장점과 단점을 고민해 보는 단계가 필요합니다.
 
 ---
 
-글 초반에 소개한 Dan Abramov의 [블로그 포스트](!https://overreacted.io/ko/why-isnt-x-a-hook/)에서는 **합성**과 **디버깅** 관점에서 바라보는 것을 제안했습니다.
+글 초반에 소개한 Dan Abramov의 [블로그 포스트](https://overreacted.io/ko/why-isnt-x-a-hook/)에서는 **합성**과 **디버깅** 관점에서 바라보는 것을 제안했습니다.
 
 `useDocumentOverflow`는 위에서 보았듯이 두 관점에서 적절하지 않은 모습을 보여주었습니다.
 반면 앞서 소개한 `usePrevious`, `useInput`, `useDropdown`, `useCheckList`는 모두 여러 컴포넌트나 여러 hooks 내에서 사용된다 하더라도 문제가 없는 것들입니다.
 
 이쯤되니까 어떤 것이 hook으로 적합한지, 그렇지 않은지가 어렴풋이 보이는 것 같습니다.
 
-# 공통적으로 사용하는 값인가?
+## 공통적으로 사용하는 값인가?
 `useDocumentOverflow`는 다른 컴포넌트나 hook에서 공통적으로 접근할 수 있는 값을 다루고 있습니다. 이처럼 공통적으로 사용하는 값을 다루는 로직은 custom hook으로 만들기에 적합하지 않습니다
 
 Dan Abramov씨의 글에서는 custom hook으로 적합하지 않은 것의 예로 `react.memo`를 언급했습니다. re-rendering 여부를 결정하는 로직을 hook으로 만든 것입니다.
@@ -318,7 +318,7 @@ re-rendering 여부 또한 (하나의 컴포넌트 내에서) 여러 hook들 간
 
 결국 ***"공유될 수 있는 값을 다루는가"*** 는 어떤 것을 hook으로 만들어야 하는가에 대한 합리적인 답변이 될 수 있을 듯합니다.
 
-# 글을 마치며
+## 글을 마치며
 
 custom hooks는 리액트가 컴포넌트뿐만 아니라 상태관리 로직까지 재활용할 수 있도록 만들어 주었습니다. Hooks 덕분에 프론트엔드 개발이 더 재미있고 간편해진 것 같습니다.
 
