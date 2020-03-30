@@ -11,6 +11,8 @@ tags:
 description: "Custom Hooks로 적합한 것과 그렇지 않은 것"
 ---
 
+> [핀다 기술블로그에 기고한 글](https://medium.com/finda-tech/%ED%95%80%EB%8B%A4%EC%97%90%EC%84%9C-%EC%93%B0%EB%8A%94-react-custom-hooks-1a732ce949a5)입니다.
+
 이 글은 핀다 프론트엔드 팀에서 사용하는 **custom hooks** 몇 가지와 어떤 것을 custom hook으로 만들어야 하는지에 대해서 이야기합니다.
 
 ---
