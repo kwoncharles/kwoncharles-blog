@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import ReactDisqusComments from 'react-disqus-comments';
+import { DiscussionEmbed } from 'disqus-react';
 import { useSiteMetadata } from '../../../hooks';
 
 type Props = {
@@ -16,11 +16,14 @@ const Comments = ({ postTitle, postSlug }: Props) => {
   }
 
   return (
-    <ReactDisqusComments
+    <DiscussionEmbed
       shortname={disqusShortname}
-      identifier={postTitle}
-      title={postTitle}
-      url={url + postSlug}
+      config={{
+        url: url + postSlug,
+        identifier: postSlug,
+        title: postTitle,
+        language: 'ko'
+      }}
     />
   );
 };
