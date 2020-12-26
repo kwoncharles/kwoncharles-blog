@@ -1,5 +1,5 @@
 ---
-title: Bitbucket pipelines를 이용해 AWS Lambda 배포하기
+title: "Bitbucket pipelines를 이용해 AWS Lambda 배포하기"
 date: "2019-08-10T11:19:02.169Z"
 template: "post"
 draft: false

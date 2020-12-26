@@ -1,9 +1,9 @@
 ---
-title: 단단한 컴포넌트 부수기
-date: "2020-12-26T01:30:00.169Z"
+title: "단단한 컴포넌트 부수기"
+date: "2020-12-26T01:35:00.169Z"
 template: "post"
 draft: false
-slug: "/posts/break-the-components"
+slug: "/posts/break-the-component"
 category: "Tech"
 tags:
   - "component"

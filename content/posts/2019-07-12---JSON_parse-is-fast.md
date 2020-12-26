@@ -1,5 +1,5 @@
 ---
-title: JSON.parse가 Object literal보다 빠르다
+title: "JSON.parse가 Object literal보다 빠르다"
 date: "2019-12-07T00:00:02.169Z"
 template: "post"
 draft: false

@@ -1,5 +1,5 @@
 ---
-title: 1년차 개발자의 2019년 회고
+title: "1년차 개발자의 2019년 회고"
 date: "2020-01-05T12:00:00.169Z"
 template: "post"
 draft: false

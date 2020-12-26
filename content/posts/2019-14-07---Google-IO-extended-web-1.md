@@ -1,5 +1,5 @@
 ---
-title: Google I/O Extended 2019 Seoul WebTech 참관기 (1/2)
+title: "Google I/O Extended 2019 Seoul WebTech 참관기 (1/2)"
 date: "2019-07-14T10:40:32.169Z"
 template: "post"
 draft: false

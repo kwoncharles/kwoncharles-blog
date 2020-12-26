@@ -1,5 +1,5 @@
 ---
-title: Debounce와 Throttle의 차이
+title: "Debounce와 Throttle의 차이"
 date: "2019-11-17T13:00:02.169Z"
 template: "post"
 draft: false

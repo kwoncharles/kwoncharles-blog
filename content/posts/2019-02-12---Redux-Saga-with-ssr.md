@@ -1,5 +1,5 @@
 ---
-title: SSR과 redux-saga
+title: "SSR과 redux-saga"
 date: "2019-12-21T01:19:02.169Z"
 template: "post"
 draft: false
