@@ -339,7 +339,7 @@ Compound Components는 단어 의미 그대로 '컴포넌트의 복합체' 라�
 
 ```jsx
 function Page() {
-  const [tab, setTab] = React.useState(tabItems)
+  const [tab, setTab] = React.useState(initialTab)
 
   return (
     <Tabs
