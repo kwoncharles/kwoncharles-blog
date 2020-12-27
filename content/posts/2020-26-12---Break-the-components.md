@@ -31,7 +31,7 @@ description: "feat. 조합, IoC"
 
 ```jsx
 /* 컴포넌트 탄생! 깔끔하다 ✨ */
-<Dialogue
+<Dialog
   title="안내"
   description="이것은 멋진 내용을 담고 있는 안내입니다."
   button={{
@@ -49,7 +49,7 @@ description: "feat. 조합, IoC"
  *
  * -> props 추가 (buttonPosition)
  */
-<Dialogue
+<Dialog
   title="안내"
   description="이것은 멋진 내용을 담고 있는 안내입니다."
   button={{
@@ -69,7 +69,7 @@ description: "feat. 조합, IoC"
  *
  * -> props 변경 (button -> buttons, variant 추가)
  */
-<Dialogue
+<Dialog
   title="안내"
   description="이것은 멋진 내용을 담고 있는 안내입니다."
   buttonPosition="top"
@@ -97,7 +97,7 @@ description: "feat. 조합, IoC"
  *
  * -> props 추가 (buttonAlign, iconAboveTitle)
  */
-<Dialogue
+<Dialog
   title="안내"
   description="이것은 멋진 내용을 담고 있는 안내입니다."
   buttonPosition="top"
@@ -121,7 +121,7 @@ description: "feat. 조합, IoC"
 /********* 6개월 뒤 *********/
 /**************************/
 
-<Dialouge
+<Dialog
   {...프많쓰않} // 프롭스가 많지만 쓰지 않는다
 />
 ```
@@ -142,9 +142,9 @@ props가 많아지면 다음과 같은 문제들이 발생하기 시작합니다
 4. 위와 같은 이유들로 인해 컴포넌트를 **변경하기가 어렵고 두려워진다.**
 
 이와 같이 다양한 문제를 안고 있는 컴포넌트는 추상화가 잘 되었다고 말하기 어렵습니다.
-위에 있는 `<Dialogue>` 컴포넌트는 재사용성은 갖추었지만 **유연성은 갖추지 못하였습니다**.
+위에 있는 `<Dialog>` 컴포넌트는 재사용성은 갖추었지만 **유연성은 갖추지 못하였습니다**.
 
-`<Dialogue>` 컴포넌트가 유연하지 않는 이유는 무엇일까요? 저는 다음과 같은 이유라고 생각합니다.
+`<Dialog>` 컴포넌트가 유연하지 않는 이유는 무엇일까요? 저는 다음과 같은 이유라고 생각합니다.
 
 > ### 비즈니스 로직이 컴포넌트 안에 들어있다.
 
@@ -163,29 +163,29 @@ props가 많아지면 다음과 같은 문제들이 발생하기 시작합니다
 
 리액트는 조합에 특화된 설계를 갖고 있습니다. 공식 홈페이지에도 [상속보다는 조합](https://reactjs.org/docs/composition-vs-inheritance.html) 이라는 내용의 글이 있습니다. '조합'이란 직역하면, 여러 개의 조각을 끼워 맞춘다는 의미죠.
 
-그런데 우리가 위에서 보았던 `<Dialogue>` 컴포넌트는 조합을 사용하는 것 같지 않습니다. 여러 개의 조각을 쓰기 보다는 하나의 큰 덩어리를 사용하는 모습입니다. 따지자면 조합보다는 상속에 더 가까운 것 같네요.
+그런데 우리가 위에서 보았던 `<Dialog>` 컴포넌트는 조합을 사용하는 것 같지 않습니다. 여러 개의 조각을 쓰기 보다는 하나의 큰 덩어리를 사용하는 모습입니다. 따지자면 조합보다는 상속에 더 가까운 것 같네요.
 
 그렇다면 저 자이언트 컴포넌트를 쪼개어 조합을 사용하도록 바꾸어 보겠습니다.
 
 ```jsx
 function Page() {
   return (
-    <Dialogue>
-      <Dialogue.Title>
+    <Dialog>
+      <Dialog.Title>
         안내
-      </Dialogue.Title>
-      <Dialogue.Description>
+      </Dialog.Title>
+      <Dialog.Description>
         이것은 멋진 내용을 담고 있는 안내입니다.
-      </Dialogue.Description>
-      <Dialogue.ButtonContainer align="vertical">
-        <Dialogue.Button type="secondary" onClick={doSomethingElse}>
+      </Dialog.Description>
+      <Dialog.ButtonContainer align="vertical">
+        <Dialog.Button type="secondary" onClick={doSomethingElse}>
           취소
-        </Dialogue.Button>
-        <Dialogue.Button type="primary" onClick={doSomething}>
+        </Dialog.Button>
+        <Dialog.Button type="primary" onClick={doSomething}>
           확인
-        </Dialogue.Button>
-      </Dialogue.ButtonContainer>
-    <Dialogue>
+        </Dialog.Button>
+      </Dialog.ButtonContainer>
+    <Dialog>
   )
 }
 ```
@@ -195,33 +195,33 @@ function Page() {
 그렇다면 `<Title>` 과 `<Description>` 을 `<Content>` 라는 컴포넌트로 합치겠습니다.
 
 ```jsx
-Dialogue.Content = ({ title, description }) => (
+Dialog.Content = ({ title, description }) => (
   <React.Fragment>
-    <Dialogue.Title>
+    <Dialog.Title>
       {title}
-    </Dialogue.Title>
-    <Dialogue.Description>
+    </Dialog.Title>
+    <Dialog.Description>
       {description}
-    </Dialogue.Description>
+    </Dialog.Description>
   </React.Fragment>
 )
 
 function Page() {
   return (
-    <Dialogue>
-      <Dialogue.Content
+    <Dialog>
+      <Dialog.Content
         title="안내"
         description="이것은 멋진 내용을 담고 있는 안내입니다."
       />
-      <Dialogue.ButtonContainer align="vertical">
-        <Dialogue.Button type="secondary" onClick={doSomethingElse}>
+      <Dialog.ButtonContainer align="vertical">
+        <Dialog.Button type="secondary" onClick={doSomethingElse}>
           취소
-        </Dialogue.Button>
-        <Dialogue.Button type="primary" onClick={doSomething}>
+        </Dialog.Button>
+        <Dialog.Button type="primary" onClick={doSomething}>
           취소
-        </Dialogue.Button>
-      </Dialogue.ButtonContainer>
-    <Dialogue>
+        </Dialog.Button>
+      </Dialog.ButtonContainer>
+    <Dialog>
   )
 }
 ```
@@ -230,7 +230,7 @@ function Page() {
 
 ```jsx
 // 자이언트 컴포넌트
-<Dialogue
+<Dialog
   iconAboveTitle="fancy-icon"
   title="안내"
   description="이것은 멋진 내용을 담고 있는 안내입니다."
@@ -249,21 +249,21 @@ function Page() {
 
 
 // 조합기반 컴포넌트
-<Dialogue>
-  <Dialogue.Icon type="fancy" /> 
-  <Dialogue.Content
+<Dialog>
+  <Dialog.Icon type="fancy" /> 
+  <Dialog.Content
     title="안내"
     description="이것은 멋진 내용을 담고 있는 안내입니다."
   />
-  <Dialogue.ButtonContainer align="vertical">
-    <Dialogue.Button type="secondary" onClick={doSomethingElse}>
+  <Dialog.ButtonContainer align="vertical">
+    <Dialog.Button type="secondary" onClick={doSomethingElse}>
       취소
-    </Dialogue.Button>
-    <Dialogue.Button type="primary" onClick={doSomething}>
+    </Dialog.Button>
+    <Dialog.Button type="primary" onClick={doSomething}>
       확인
-    </Dialogue.Button>
-  </Dialogue.ButtonContainer>
-</Dialogue>
+    </Dialog.Button>
+  </Dialog.ButtonContainer>
+</Dialog>
 ```
 
 조합기반 컴포넌트가 코드양이 더 많고 더 지저분해 보이기도 하네요.
@@ -282,13 +282,13 @@ function Page() {
 
 우리는 조합을 사용함으로써 자이언트 컴포넌트의 문제를 어느정도 해결할 수 있게 되었습니다. 그렇다면 조합의 어떤 특징이 이러한 변화를 만들 수 있었던 걸까요?
 
-조합의 특징은  `<Dialogue>` 컴포넌트가 담당하던 역할이 어떻게 바뀌었는지를 따져보면 힌트를 얻을 수 있습니다.
+조합의 특징은  `<Dialog>` 컴포넌트가 담당하던 역할이 어떻게 바뀌었는지를 따져보면 힌트를 얻을 수 있습니다.
 
 ----
 
 ## 제어역전 (Inversion of Control)
 
-`<Dialogue>` 컴포넌트의 역할이 조합을 사용하기 전과 후에 어떻게 달라졌을까요?
+`<Dialog>` 컴포넌트의 역할이 조합을 사용하기 전과 후에 어떻게 달라졌을까요?
 
 #### Before : 자이언트 컴포넌트일 때 담당하던 역할
 
@@ -303,7 +303,7 @@ function Page() {
     (글자크기, 색상, 간격 등..)
 
 
-조합 버전에서 `<Dialogue>`의 역할이 줄어들었습니다! 기존의 '어떻게 배치할까'에 대한 역할을 `<Dialogue>` 가 더이상 담당하고 있지 않습니다. 해당 역할은 `<Dialogue>` 를 사용하는 개발자에게 넘어갔습니다! 조합 기반의 컴포넌트를 사용하면 페이지를 개발할 때 해야하는 일이 하나 더 늘어나게 되지만 그로 인해 유연성을 갖는다는 장점을 얻게 됩니다.
+조합 버전에서 `<Dialog>`의 역할이 줄어들었습니다! 기존의 '어떻게 배치할까'에 대한 역할을 `<Dialog>` 가 더이상 담당하고 있지 않습니다. 해당 역할은 `<Dialog>` 를 사용하는 개발자에게 넘어갔습니다! 조합 기반의 컴포넌트를 사용하면 페이지를 개발할 때 해야하는 일이 하나 더 늘어나게 되지만 그로 인해 유연성을 갖는다는 장점을 얻게 됩니다.
 
 프로그래밍에서 **API를 사용하는 쪽으로 특정 역할을 넘기는 패턴을 제어역전(Inversion of Control, IoC)**라고 부르는데 위와 같이 페이지 개발 시 컴포넌트를 조합하여 만드는 것도 제어역전의 한 형태라고 볼 수 있습니다.
 
@@ -331,9 +331,9 @@ const dogs = animals.filter(animal => animal.species === 'dog')
 
 [react-router](https://reactrouter.com), [remix](https://remix.run) 개발자로 유명한 [라이언 플로런스](https://twitter.com/ryanflorence)씨가 자주 언급하는 패턴 중 하나인 [Compound Components](https://www.youtube.com/watch?v=hEGg-3pIHlE&feature=youtu.be)는 조합의 대표적인 사례입니다.
 
-Compound Components는 단어 의미 그대로 '컴포넌트의 복합체' 라는 의미입니다. 위에서 보았던 `<Dialogue>` 의 조합 버전처럼 사용하는 쪽에서 여러 개의 컴포넌트를 조합하여 사용하는 것을 Compound Components라고 부릅니다.
+Compound Components는 단어 의미 그대로 '컴포넌트의 복합체' 라는 의미입니다. 위에서 보았던 `<Dialog>` 의 조합 버전처럼 컴포넌트를 사용하는 쪽에서 여러 개의 컴포넌트를 조합하여 사용하는 것을 Compound Components라고 부릅니다.
 
-하지만 위에서 보았던 `<Dialogue>` 컴포넌트는 Compound Components의 장점을 모두 보여주기에는 부족한 예시였습니다. Compound Components는 React hooks 나 다른 패턴과 함께 사용하면  State를 숨김으로써 더 깔끔한 추상화를 제공할 수 있다는 장점이 있습니다.
+하지만 위에서 보았던 `<Dialog>` 컴포넌트는 Compound Components의 장점을 모두 보여주기에는 부족한 예시였습니다. Compound Components는 React hooks 나 다른 패턴과 함께 사용하면  State를 숨김으로써 더 깔끔한 추상화를 제공할 수 있다는 장점이 있습니다.
 
 설명을 위해 Tab 컴포넌트를 만들어 보겠습니다. 먼저 Tab을 자이언트 컴포넌트로 만든다면 다음과 같이 사용될 것입니다.
 
@@ -373,7 +373,7 @@ function Page() {
 }
 ```
 
-`<Dialogue>` 컴포넌트처럼 유연한 컴포넌트로 만들어졌습니다. alignment를 바꾸거나 탭 컴포넌트 안에 다른 컴포넌트를 삽입하는 요청도 무리 없이 수행할 수 있을 것 같습니다.
+`<Dialog>` 컴포넌트처럼 유연한 컴포넌트로 만들어졌습니다. alignment를 바꾸거나 탭 컴포넌트 안에 다른 컴포넌트를 삽입하는 요청도 무리 없이 수행할 수 있을 것 같습니다.
 
 그런데 위에서 이야기했듯이 Compound Components는 State를 숨길 수 있다는 장점도 갖는다는 하였죠.
 
