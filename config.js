@@ -29,7 +29,7 @@ module.exports = {
   ],
   author: {
     name: '신 권철 (Charles)',
-    photo: '/charles.png',
+    photo: '/charles.jpeg',
     bio: '기술, 그리고 지속가능한 세상을 만드는 것에 관심이 있습니다.',
     contacts: {
       email: 'skc7401@gmail.com',
