@@ -30,9 +30,9 @@ module.exports = {
   author: {
     name: '신 권철 (Charles)',
     photo: '/charles.jpeg',
-    bio: '기술, 그리고 지속가능한 세상을 만드는 것에 관심이 있습니다.',
+    bio: '함께 만들기! 함께 자라기!',
     contacts: {
-      email: 'skc7401@gmail.com',
+      email: 'hello.kwon.charles@gmail.com',
       linkedin: 'kwoncheolshin',
       // twitter: '#',
       github: 'kwoncharles'

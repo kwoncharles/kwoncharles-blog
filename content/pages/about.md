@@ -5,17 +5,19 @@ template: "page"
 
 ## Work Experiences
 
-- [FINDA](https://www.finda.co.kr) (2019.02 ~)
+- [Kurly](https://kurly.com) (2021.03 ~ )
+
+  **Javascript Engineer**
+
+  - Working on the Next generation e-commerce web service
+
+- [FINDA](https://www.finda.co.kr) (2019.02 ~ 2021.03)
 
   **Front-end Engineer**
 
-  - Developed FINDA Web, Webview
+  - Working on Fintech Web + Native Webview
 
-  - Building up Micro Frontend Architecture
-
-  - Improving performance with Lighthouse audit, AMP, PWA
-    
-  - **Typescript**, **React**, **Redux(saga)**, Webpack, Emotion, Sass, Next.js, Ant design, **SSR**, Docker
+  - **Typescript**, **React**, tailwindcss, emotion-js, Next.js, **SSR**, Docker
 
 ## Translation Works (en-ko)
 
