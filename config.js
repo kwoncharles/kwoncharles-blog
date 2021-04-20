@@ -8,7 +8,7 @@ module.exports = {
   copyright: '© Powered by gatsby-starter-lumen and All rights reserved by Kwoncheol ',
   disqusShortname: 'kwoncheol',
   postsPerPage: 4,
-  googleAnalyticsId: 'UA-73379983-2',
+  googleAnalyticsId: 'G-MEJPH4ECS6',
   menu: [
     {
       label: 'About me',
