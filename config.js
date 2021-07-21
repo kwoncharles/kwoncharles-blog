@@ -32,7 +32,7 @@ module.exports = {
     photo: '/charles.jpeg',
     bio: '',
     contacts: {
-      email: 'hello.kwon.charles@gmail.com',
+      email: 'hello@kwoncheol.me',
       linkedin: 'kwoncheolshin',
       // twitter: '#',
       github: 'kwoncharles'
