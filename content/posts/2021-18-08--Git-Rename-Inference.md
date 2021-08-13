@@ -14,7 +14,7 @@ description: ""
 
 - [들어가기 전에](#들어가기-전에)
 - [폴더구조 개편, 그리고 제법 똑똑한 git](#폴더구조-개편-그리고-제법-똑똑한-git)
-- [git의 넘겨짚기](#git의-넘겨짚기)
+- [git의 추론](#git의-추론)
 - [git의 `renamed` , `edit-renamed` 추론 과정](#git의-renamed--edit-renamed-추론-과정)
   - [너무 비싼 연산 아닌가요?](#너무-비싼-연산-아닌가요)
 - [비하인드 삽질 스토리](#비하인드-삽질-스토리)
@@ -52,6 +52,8 @@ git에는 네 가지 데이터 타입이 존재합니다.
 
 ---
 
+> 위 내용들에 대한 자세한 설명은 [여기서](https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-Git-%EA%B0%9C%EC%B2%B4) 확인하실 수 있습니다.
+
  글을 읽으시는데 필요한 개념은 이 세 가지가 전부입니다. 글을 읽으시는 동안 **git에서 파일의 내용은 hash되어  `blob` 이라는 타입으로 관리되고, 파일명과 폴더 경로는 `tree` 라는 타입으로 관리된다는 것**만 기억해주세요!
 
 이제 본론으로 들어가겠습니다!
@@ -74,15 +76,15 @@ git에는 네 가지 데이터 타입이 존재합니다.
 2. 폴더 경로만 변경된 경우에는 파일의 hash 값이 변경되지 않는다. 경로(`tree`)만 변했을 뿐 파일 내용(`blob`)은 변하지 않았으니.
 3. git은 하나의 commit 안에서 **hash 값이 같은** 파일의 추가와 제거가 함께 존재한다면 파일 경로가 변경되었다고 판단할 수 있을 것이다.
 
-그런데 `edit-renamed` 의 경우에도 commit history가 남아있다는 것은 납득하기 어려웠습니다. `edit-renamed` 는 파일의 hash 값(`blob`)과 폴더 경로(`tree`)의 hash 값 모두 변경됩니다. 이렇게 되면 `renamed`의 경우처럼 생성, 제거를 정확하게 매칭하여 판단할 수 없게 됩니다. 
+그런데 `edit-renamed` 의 경우에도 commit history가 남아있다는 것은 납득하기 어려웠습니다. `edit-renamed` 는 파일의 hash 값과 폴더 경로의 hash 값 모두 변경됩니다. 이렇게 되면 `renamed`의 경우처럼 생성, 제거를 정확하게 매칭하여 판단할 수 없게 됩니다. 
 
 하지만 git은  `edit-renamed` 를 알아차리고 있었습니다. `edit-renamed` 된 파일에 대해서 `git log --follow -p -- <파일경로>`  명령어를 실행하면 폴더경로가 변경되기 이전의 변경사항들까지 모두 볼 수 있었습니다.
 
 어떻게 된 걸까요?
 
-## git의 넘겨짚기
+## git의 추론
 
-다양한 자료들을 찾아보았고, git은 `renamed` , `edit-renamed` 를 **'추론'을 통해서 판단한다**는 것을 알게되었습니다. 그래서 저는 이에 대한 공식문서를 찾아보았습니다. 하지만 그 추론 방법에 대해서 공식적으로 이야기하는 문서는 [코드](https://github.com/git/git/blob/master/diffcore-rename.c) 외에는 찾아볼 수 없었습니다.
+다양한 자료들을 찾아보았고, git은 `renamed` , `edit-renamed` 를 **추론을 통해서 판단한다**는 것을 알게되었습니다. 그래서 저는 이에 대한 공식문서를 찾아보았습니다. 하지만 그 추론 방법에 대해서 공식적으로 이야기하는 문서는 [코드](https://github.com/git/git/blob/master/diffcore-rename.c) 외에는 찾아볼 수 없었습니다.
 
 하지만 고맙게도 추론 과정에 대해 소개하는 여러가지 글이 있었습니다.
 
@@ -133,7 +135,7 @@ git의 `renamed`, `edit-renamed` 추론은 3단계로 이루어져있습니다. 
 
 ### 너무 비싼 연산 아닌가요?
 
-느끼셨겠지만 위 유사도 비교 과정은 상당히 '비싼' 연산입니다. 생성된 파일의 수를 `A` , 삭제된 파일의 수를 `D` 라고 할 경우  `A * D` 가지 조합에 대해서 유사도 비교 연산을 진행합니다. 그래서 git은 `A + D` 가 일정 숫자를 넘어가면 rename 찾기 과정을 생략하고 넘어갑니다. [`diff.renameLimit`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenameLimit) 옵션을 통해 파일 개수 제한값을 변경할 수 있으며 [`diff.renames`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames) 옵션을 사용하여 rename 찾기 과정을 완전히 생략할 수도 있습니다.
+느끼셨겠지만 위 유사도 비교 과정은 **상당히 비싼 연산**입니다. 생성된 파일의 수를 `A` , 삭제된 파일의 수를 `D` 라고 할 경우  `A * D` 가지 조합에 대해서 유사도 비교 연산을 진행합니다. 그래서 git은 `A + D` 가 일정 숫자를 넘어가면 rename 찾기 과정을 생략하고 넘어갑니다. [`diff.renameLimit`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenameLimit) 옵션을 통해 파일 개수 제한값을 변경할 수 있으며 [`diff.renames`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames) 옵션을 사용하여 rename 찾기 과정을 완전히 생략할 수도 있습니다.
 
 ## 비하인드 삽질 스토리
 
@@ -186,7 +188,9 @@ const line2 = 2;
 
 #### <마지막줄 개행이 **없는** 경우>
 
-먼저 개행이 없는 경우부터 살펴보겠습니다. git은 `edit-renamed` 를 추론하기 위해 추가/삭제된 파일을 매칭한다고 했으니 삭제된 파일과 추가된 파일을 함께 살펴보겠습니다. git이 파일을 읽어들이는 모양으로 보여드리면 대략 아래와 같습니다. 
+먼저 개행이 없는 경우부터 살펴보겠습니다. git은 `edit-renamed` 를 추론하기 위해 추가/삭제된 파일을 매칭한다고 했으니 삭제된 파일과 추가된 파일을 함께 살펴보겠습니다.
+
+git이 파일을 읽어들이는 모양으로 보여드리면 대략 아래와 같습니다. 
 
 ```bash
 # 삭제 파일 (folder-a/index.js) 
@@ -206,9 +210,13 @@ const line1 = 1;\nconst line2 = 2;
 ['const line1 = 1;\n', 'const line2 = 2;']
 ```
 
-이제 추가/삭제 파일의 chunk들을 비교해볼 차례입니다. git은 추가/삭제된 파일의 chunk가 50%(기본값) 이상 같다면 `edit-renamed` 로 판단한다고 했는데 위 경우는 동일한 chunk가 한 개도 없습니다. IDE에서는 변경되지 않은 것처럼 보이는 첫 번째 라인의 코드도 `folder-b/index.js` 파일에서는 개행(\n)이 포함된 체로 chunk로 묶이기 때문에 변경된 라인으로 처리됩니다.
+이제 추가/삭제 파일의 chunk들을 비교해볼 차례입니다.
 
-삭제된 파일( `folder-a/index.js` )과 추가된 파일(`folder-b/index.js`)의 유사도는 0%이므로 **git은 이 변경사항을 별도의 추가, 삭제로 판단합니다.**
+git은 추가/삭제된 파일의 chunk가 50%(기본값) 이상 같다면 `edit-renamed` 로 판단한다고 했는데 위 경우는 **동일한 chunk가 한 개도 없습니다**.
+
+IDE에서는 변경되지 않은 것처럼 보였던 첫 번째 라인의 코드도 `folder-b/index.js` 파일을 chunk로 나누는 과정에서 개행(`\n`)이 포함되었기 때문에 변경된 라인으로 처리됩니다.
+
+삭제된 파일( `folder-a/index.js` )과 추가된 파일(`folder-b/index.js`)의 유사도는 **0%**이므로 **git은 이 변경사항을 별도의 추가, 삭제로 판단합니다.**
 
 #### <마지막줄 개행이 있는 경우>
 
@@ -232,7 +240,7 @@ const line1 = 1;\nconst line2 = 2\n;
 ['const line1 = 1;\n', 'const line2 = 2;\n']
 ```
 
-보시다시피 첫 번째 chunk가 동일합니다. 추가된 파일의 chunk중 '50% 이상'의 chunk가 삭제된 파일의 chunk에 존재합니다. 따라서 **git은 이 변경사항을 `edit-renamed` 라고 판단합니다.**
+보시다시피 첫 번째 chunk가 동일합니다. 추가된 파일의 chunk 중에서 **50% 이상**의 chunk가 삭제된 파일의 chunk에 존재합니다. 따라서 **git은 이 변경사항을 `edit-renamed` 라고 판단합니다.**
 
 ---
 
@@ -256,8 +264,8 @@ const line1 = 1;\nconst line2 = 2\n;
 ---
 
 > git의 설계는 알면 알수록 멋지게 느껴집니다. 앞으로 git과 관련된 글을 더 쓰게 될 것 같은 느낌이...
-
-git의 아름다운 내부 구조에 대해서 이야기해주신 [기계인간](https://johngrib.github.io/)님, [naraekn](https://naraekn.github.io/)님께 감사의 인사를 드립니다 🙇‍♂️
+>
+> git의 멋진 내부 구조에 대해서 이야기해주신 [기계인간](https://johngrib.github.io/)님, [naraekn](https://naraekn.github.io/)님께 감사의 인사를 드립니다 🙇‍♂️
 
 ## 참고한 글
 
