@@ -1,6 +1,6 @@
 ---
 title: "git이 폴더경로 변경을 알아내는 방법"
-date: "2021-08-18T15:20:32.169Z"
+date: "2021-08-18T16:00:32.169Z"
 template: "post"
 draft: false
 slug: "/posts/git-rename-inference"
@@ -22,7 +22,7 @@ description: ""
 
 ![thumnbnail](/git-rename-inference/thumbnail_thomas-kelley.jpg)
 
-# 들어가기 전에
+## 들어가기 전에
 
 들어가기 전에 git의 내부 구조에 익숙하지 않으신 분들을 위해서 git의 세 가지 특성을 간략하게 소개드리겠습니다.
 
@@ -36,7 +36,7 @@ git 프로젝트에는 다양한 내용의 파일들이 저장됩니다. 이 때
 
 ### 2. git의 네 가지 데이터 타입
 
-git에는 네 가지 데이터 타입이 있습니다: `blob` , `tree` , `commit`, `tag`
+git에는 네 가지 데이터 타입이 존재합니다.
 
 - `blob` 데이터는 파일의 내용입니다. blob은 **b**inary **l**arge **ob**ject의 약자입니다. 앞서 설명드린 hash된 파일내용이 `blob` 데이터입니다.
 
@@ -56,7 +56,7 @@ git에는 네 가지 데이터 타입이 있습니다: `blob` , `tree` , `commit
 
 이제 본론으로 들어가겠습니다!
 
-# 폴더구조 개편, 그리고 제법 똑똑한 git
+## 폴더구조 개편, 그리고 제법 똑똑한 git
 
 얼마전 팀에서 개발중인 프로젝트의 폴더구조 변경 작업을 진행했습니다. 많은 파일들이 새로운 폴더로 옮겨졌고 몇몇 파일은 참조하던 파일의 경로가 바뀜에 따라 파일 내용이 변경되기도 했습니다.
 
@@ -80,7 +80,7 @@ git에는 네 가지 데이터 타입이 있습니다: `blob` , `tree` , `commit
 
 어떻게 된 걸까요?
 
-# git의 넘겨짚기
+## git의 넘겨짚기
 
 다양한 자료들을 찾아보았고, git은 `renamed` , `edit-renamed` 를 **'추론'을 통해서 판단한다**는 것을 알게되었습니다. 그래서 저는 이에 대한 공식문서를 찾아보았습니다. 하지만 그 추론 방법에 대해서 공식적으로 이야기하는 문서는 [코드](https://github.com/git/git/blob/master/diffcore-rename.c) 외에는 찾아볼 수 없었습니다.
 
@@ -94,19 +94,19 @@ git에는 네 가지 데이터 타입이 있습니다: `blob` , `tree` , `commit
 
 위 글로부터 배운 내용들을 바탕으로 git이 `renamed`, `edit-renamed` 를 추론하는 방법에 대해서 소개드리겠습니다.
 
-# git의 `renamed` , `edit-renamed` 추론 과정
+## git의 `renamed` , `edit-renamed` 추론 과정
 
 git의 `renamed`, `edit-renamed` 추론은 3단계로 이루어져있습니다. 하나씩 살펴보겠습니다.
 
-## 1단계: 후보 선발
+### 1단계: 후보 선발
 
  먼저 프로젝트 내에 추가/삭제된 파일의 경로들을 수집합니다. 이 때 '새롭게 추가'되거나 '삭제'된 파일뿐만 아니라 경로를 변경한 파일도 후보에 포함됩니다. 예를 들어 `src/a` 폴더에 있던 `index.js` 가 `src/b` 폴더로 이동할 경우 `src/a/index.js` 는 '삭제'로, `src/b/index.js` 는 '추가'로 인식됩니다.
 
-## 2단계: 파일 hash 비교 (`renamed` 찾기)
+### 2단계: 파일 hash 비교 (`renamed` 찾기)
 
  추가/삭제된 파일 리스트 중에서 hash값이 같은 파일이 있는지 확인합니다. 만약 hash 값이 같은 파일이 한 경로(`src/a`)에서 삭제되고 다른 경로(`src/b`)에서 추가되었다면 git은 경로가 변경(`src/a` → `src/b`), 즉 `renamed`된 것으로 '판단'합니다.
 
-## 3단계: 파일간의 유사도 비교 (`edit-renamed` 찾기)
+### 3단계: 파일간의 유사도 비교 (`edit-renamed` 찾기)
 
  2단계에서 hash 값 비교를 마친 이후 여전히 생성/삭제된 파일이 남아있다면 이제부터 `edit-renamed` 를 찾기 위해 생성/삭제된 파일간의 유사도를 비교합니다. 유사도를 비교하는 과정은 다음과 같습니다.
 
@@ -135,7 +135,7 @@ git의 `renamed`, `edit-renamed` 추론은 3단계로 이루어져있습니다. 
 
 느끼셨겠지만 위 유사도 비교 과정은 상당히 '비싼' 연산입니다. 생성된 파일의 수를 `A` , 삭제된 파일의 수를 `D` 라고 할 경우  `A * D` 가지 조합에 대해서 유사도 비교 연산을 진행합니다. 그래서 git은 `A + D` 가 일정 숫자를 넘어가면 rename 찾기 과정을 생략하고 넘어갑니다. [`diff.renameLimit`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenameLimit) 옵션을 통해 파일 개수 제한값을 변경할 수 있으며 [`diff.renames`](https://git-scm.com/docs/git-config#Documentation/git-config.txt-diffrenames) 옵션을 사용하여 rename 찾기 과정을 완전히 생략할 수도 있습니다.
 
-# 비하인드 삽질 스토리
+## 비하인드 삽질 스토리
 
 글을 마치기 전에 git의 rename에 대해 알아보던 중 제가 경험했던 삽질 스토리를 하나 공유드리겠습니다. 
 
@@ -243,7 +243,7 @@ const line1 = 1;\nconst line2 = 2\n;
 1. [마지막줄 개행이 있는 경우](https://github.com/kwoncharles/git-heuristic-test-with-newline)
 2. [마지막줄 개행이 없는 경우](https://github.com/kwoncharles/git-heuristic-test-without-newline)
 
-# 마무리
+## 마무리
 
 글을 마무리하기 전에 한 가지 고백을 하겠습니다. 저는 이 글에서 'rename'이라는 주제에 집중하기 위해서 거짓말을 하나 했습니다. 바로 'git이 변경사항을 기억한다'는 표현인데요. 사실 git은 변경사항을 기억하지 않습니다. 
 
@@ -259,7 +259,7 @@ const line1 = 1;\nconst line2 = 2\n;
 
 git의 아름다운 내부 구조에 대해서 이야기해주신 [기계인간](https://johngrib.github.io/)님, [naraekn](https://naraekn.github.io/)님께 감사의 인사를 드립니다 🙇‍♂️
 
-# 참고한 글
+## 참고한 글
 
 #### Stackoverflow
 
