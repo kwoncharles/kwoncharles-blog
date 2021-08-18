@@ -13,6 +13,7 @@
     margin-right: auto;
     font-weight: 600;
     text-align: center;
+    white-space: nowrap;
     @include line-height(1.65);
     @include margin-top(1);
     @include margin-bottom(0)
@@ -95,6 +96,14 @@
 }
 
 :global {
+  :not(pre) > code[class*="language-"] {
+    white-space: nowrap;
+
+    &::selection {
+      background: rgba(42,59,71,.14);
+      color: #d44b4b;
+    }
+  }
   :not(pre) > code[class*="language-"], pre[class*="language-"] {
     background-color: #22292e;
   }
