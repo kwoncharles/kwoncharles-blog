@@ -1,5 +1,5 @@
 ---
-title: "git이 폴더경로 변경을 알아내는 방법"
+title: "git은 폴더경로가 변경된 것을 어떻게 알 수 있을까?"
 date: "2021-08-18T16:00:32.169Z"
 template: "post"
 draft: false
