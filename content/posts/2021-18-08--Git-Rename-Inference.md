@@ -106,7 +106,7 @@ git의 `renamed`, `edit-renamed` 추론은 3단계로 이루어져있습니다. 
 
 ### 2단계: 파일 hash 비교 (`renamed` 찾기)
 
- 추가/삭제된 파일 리스트 중에서 hash값이 같은 파일이 있는지 확인합니다. 만약 hash 값이 같은 파일이 한 경로(`src/a`)에서 삭제되고 다른 경로(`src/b`)에서 추가되었다면 git은 경로가 변경(`src/a` → `src/b`), 즉 `renamed`된 것으로 '판단'합니다.
+ 1단계에서 수집한 파일들 중에서 hash값이 같은 파일이 있는지 확인합니다. 만약 hash 값이 같은 파일이 한 경로(`src/a`)에서 삭제되고 다른 경로(`src/b`)에서 추가되었다면 git은 경로가 변경(`src/a` → `src/b`), 즉 `renamed`된 것으로 '판단'합니다.
 
 ### 3단계: 파일간의 유사도 비교 (`edit-renamed` 찾기)
 
@@ -120,6 +120,8 @@ git의 `renamed`, `edit-renamed` 추론은 3단계로 이루어져있습니다. 
 4. 두 파일의 chunk들을 비교하여 일정 비율([기본 값은 50%](https://git-scm.com/docs/git-format-patch#Documentation/git-format-patch.txt---find-renamesltngt)) 이상 동일한 경우 `edit-renamed` 로 판단한다. 
 5. 추가/삭제된 파일간의 **모든 조합**에 대하여 1~4 과정을 진행한다.
 6. 유사도 점수가 가장 높은 조합부터 차례대로 `edit-renamed` 로 선택된다. (하나의 파일이 여러 개와 매칭될 수 있으므로 유사도가 높은 조합부터 선택합니다)
+
+---
 
 파일을 chunk로 나누는 과정은 아래와 같습니다.
 
