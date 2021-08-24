@@ -265,7 +265,7 @@ const line1 = 1;\nconst line2 = 2\n;
 
 > git의 설계는 알면 알수록 멋지게 느껴집니다. 앞으로 git과 관련된 글을 더 쓰게 될 것 같은 느낌이...
 >
-> git의 멋진 내부 구조에 대해서 이야기해주신 [기계인간](https://johngrib.github.io/)님, [naraekn](https://naraekn.github.io/)님께 감사의 인사를 드립니다 🙇‍♂️
+> git의 멋진 내부 구조에 대해서 이야기해주신 [기계인간](https://johngrib.github.io/)님, [naraekn](https://github.com/naraekn)님께 감사의 인사를 드립니다 🙇‍♂️
 
 ## 참고한 글
 
