@@ -86,7 +86,7 @@ git에는 네 가지 오브젝트 타입이 존재합니다.
 
 하지만 고맙게도 추론 과정에 대해 소개하는 여러가지 글이 있었습니다.
 
-- [[Github blog] Commits are snapshots, not diffs](https://github.blog/2020-12-17-commits-are-snapshots-not-diffs/#since-commits-arent-diffs-how-does-git-track-renames)
+- [[GitHub blog] Commits are snapshots, not diffs](https://github.blog/2020-12-17-commits-are-snapshots-not-diffs/#since-commits-arent-diffs-how-does-git-track-renames)
 - [[stackoverflow] Trying to understand `git diff` and `git mv` rename detection mechanism](https://stackoverflow.com/questions/46256139/trying-to-understand-git-diff-and-git-mv-rename-detection-mechanism)
 - [How does git detect renames?](https://chelseatroy.com/2020/05/09/question-how-does-git-detect-renames/)
 - [[stackoverflow] What's git's heuristic for assigning content modifications to file paths?](https://stackoverflow.com/questions/21292562/whats-gits-heuristic-for-assigning-content-modifications-to-file-paths/21292993)
@@ -275,7 +275,7 @@ const line1 = 1;\nconst line2 = 2\n;
 - [Trying to understand `git diff` and `git mv` rename detection mechanism](https://stackoverflow.com/questions/46256139/trying-to-understand-git-diff-and-git-mv-rename-detection-mechanism)
 - [What's git's heuristic for assigning content modifications to file paths?](https://stackoverflow.com/questions/21292562/whats-gits-heuristic-for-assigning-content-modifications-to-file-paths/21292993)
 
-#### Github Blog
+#### GitHub Blog
 
 - [Commits are snapshots, not diffs](https://github.blog/2020-12-17-commits-are-snapshots-not-diffs/#since-commits-arent-diffs-how-does-git-track-renames)
 
